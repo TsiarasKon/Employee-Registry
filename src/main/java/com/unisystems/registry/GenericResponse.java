@@ -2,13 +2,13 @@ package com.unisystems.registry;
 
 public class GenericResponse<T> {
     private T data;
-    private Error error;
+    private GenericError error;
 
     public GenericResponse(T data) {
         this.data = data;
     }
 
-    public GenericResponse(Error error) {
+    public GenericResponse(GenericError error) {
         this.error = error;
     }
 
@@ -20,11 +20,11 @@ public class GenericResponse<T> {
         this.data = data;
     }
 
-    public Error getError() {
+    public GenericError getError() {
         return error;
     }
 
-    public void setError(Error error) {
+    public void setError(GenericError error) {
         this.error = error;
     }
 }

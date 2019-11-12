@@ -1,11 +1,11 @@
-package com.example.demo.pojos;
+package com.unisystems.registry;
 
-public class Error {
+public class GenericError {
     private int code;
     private String title;
     private String desc;
 
-    public Error(int code, String title, String desc) {
+    public GenericError(int code, String title, String desc) {
         this.code = code;
         this.title = title;
         this.desc = desc;
