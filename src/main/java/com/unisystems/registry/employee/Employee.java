@@ -62,6 +62,10 @@ public class Employee {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getRecordNum() {
         return recordNum;
     }
