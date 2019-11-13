@@ -1,7 +1,8 @@
 package com.unisystems.registry.employee;
 
-import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.employee.search_employee_strategy.SearchEmployeeStrategyFactory;
+import com.unisystems.registry.employee.search_employee_strategy.SearchEmployeeStratrgy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,10 @@ public class EmployeeService {
     @Autowired
     EmployeeMapper mapper;
 
-    public GenericResponse<MultiEmployeeResponse> getAllEmployees() {
+    @Autowired
+    private SearchEmployeeStrategyFactory factory;
+
+    public GenericResponse<MultipleEmployeeResponse> getAllEmployees() {
         Iterable<Employee> retrievedEmployees = employeeRepository.findAll();
         List<EmployeeResponse> employees = new ArrayList<>();
 
@@ -24,9 +28,12 @@ public class EmployeeService {
             employees.add(mapper.mapEmployee(employee));
         }
 
-        if(employees.isEmpty())
-            return new GenericResponse(new GenericError(0,"Empty List","There are no employees in the database."));
+        return new GenericResponse<>(new MultipleEmployeeResponse(employees));
+    }
 
-        return new GenericResponse<>(new MultiEmployeeResponse(employees));
+    public GenericResponse<MultipleEmployeeResponse> getEmployeesInCriteria(String criteria, long criteriaId) {
+        Iterable<Employee> retrievedEmployees = employeeRepository.findAll();
+        SearchEmployeeStratrgy stratrgy = factory.makeStrategyForCriteria(criteria);
+        return new GenericResponse<>(mapper.mapEmployeeList(stratrgy.execute(criteriaId, retrievedEmployees)));
     }
 }

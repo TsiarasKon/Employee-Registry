@@ -2,8 +2,19 @@ package com.unisystems.registry.employee;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class EmployeeMapper {
+
+    public MultipleEmployeeResponse mapEmployeeList(List<Employee> employees) {
+        List<EmployeeResponse> employeesResponse = new ArrayList<>();
+        for (Employee e : employees) {
+            employeesResponse.add(mapEmployee(e));
+        }
+        return new MultipleEmployeeResponse(employeesResponse);
+    }
 
     public EmployeeResponse mapEmployee(Employee employee) {
         return new EmployeeResponse(

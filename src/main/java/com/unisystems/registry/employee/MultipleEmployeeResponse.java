@@ -2,11 +2,11 @@ package com.unisystems.registry.employee;
 
 import java.util.List;
 
-public class MultiEmployeeResponse {
+public class MultipleEmployeeResponse {
 
     private List<EmployeeResponse> employeeResponses;
 
-    public MultiEmployeeResponse(List<EmployeeResponse> employeeResponses) {
+    public MultipleEmployeeResponse(List<EmployeeResponse> employeeResponses) {
         this.employeeResponses = employeeResponses;
     }
 
