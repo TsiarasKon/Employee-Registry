@@ -2,11 +2,13 @@ package com.unisystems.registry.unit;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.business_unit.BusinessUnit;
 import com.unisystems.registry.department.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UnitService {
@@ -35,16 +37,13 @@ public class UnitService {
 
 
 
-    public List<UnitResponse> getUnitsByUnitId(Long unitId) {
-        Iterable<Unit> retrievedUnits = repository.findAll();
-        List<UnitResponse> units = new ArrayList<>();
-        for (Unit unit : retrievedUnits) {
-            if (Long.toString(unit.getId()) != "") {
-                units.add(mapper.mapUnitResponseFromUnit(unit));
 
-            }
-        }
 
-        return units;
+    public GenericResponse<Optional<Unit>> getUnitsByUnitId(Long unitId)
+    {
+        return new GenericResponse<>(repository.findById(unitId));
+
     }
+
+
 }
