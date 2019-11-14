@@ -34,7 +34,8 @@ public class UnitMapperShould {
 
     @Test
     public void keepSameId(){
-        Assert.assertEquals(100,output.getId());}
+        Assert.assertEquals(100,output.getId());
+    }
     @Test
     public void keepSameName(){
         Assert.assertEquals("ChangedName",output.getName());
