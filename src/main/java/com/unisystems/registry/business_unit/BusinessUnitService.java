@@ -1,6 +1,8 @@
 package com.unisystems.registry.business_unit;
 
+import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,5 +37,14 @@ public class BusinessUnitService
     {
         return new GenericResponse<>(repository.findById(id));
 
+    }
+
+    public GenericResponse<BusinessUnitResponse> getBusinessUnitWithId(long id) {
+        try {
+            return new GenericResponse<>(mapper.mapBusinessUnitResponseFromBusinessUnit( repository.findById(id).orElseThrow(()
+                    -> new InvalidIdException("Business Unit", id))));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
     }
 }

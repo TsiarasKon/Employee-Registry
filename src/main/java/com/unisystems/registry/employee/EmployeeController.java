@@ -19,39 +19,12 @@ public class EmployeeController {
     @GetMapping("/allEmployees")
     public ResponseEntity getAllEmployees(){
         GenericResponse<MultipleEmployeeResponse> employeeResponse = service.getAllEmployees();
-
-        if(employeeResponse.getError() != null){
-            return new ResponseEntity(
-                    employeeResponse.getError(),
-                    null,
-                    HttpStatus.BAD_REQUEST
-            );
-        }
-        else{
-            return new ResponseEntity(
-                    employeeResponse.getData(),
-                    null,
-                    HttpStatus.OK
-            );
-        }
+        return employeeResponse.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/employees/{id}")
     public ResponseEntity getEmployeeWithId(@PathVariable long id) {
-        try {
-            EmployeeResponse employeeResponse = service.getEmployeeWithId(id);
-            return new ResponseEntity(
-                    employeeResponse,
-                    null,
-                    HttpStatus.OK
-            );
-        } catch (InvalidIdException e) {
-            return new ResponseEntity(
-                    new GenericError(1, "Invalid id", e.getMessage()),
-                    null,
-                    HttpStatus.BAD_REQUEST
-            );
-        }
+        return service.getEmployeeWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/employeesIn/{criteria}/{criteriaId}")
@@ -63,19 +36,6 @@ public class EmployeeController {
                     HttpStatus.BAD_REQUEST
             );
         }
-        GenericResponse<MultipleEmployeeResponse> employeeResponse = service.getEmployeesInCriteria(criteria, criteriaId);
-        if (employeeResponse.getError() != null){
-            return new ResponseEntity(
-                    employeeResponse.getError(),
-                    null,
-                    HttpStatus.BAD_REQUEST
-            );
-        } else {
-            return new ResponseEntity(
-                    employeeResponse.getData(),
-                    null,
-                    HttpStatus.OK
-            );
-        }
+        return service.getEmployeesInCriteria(criteria, criteriaId).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 }

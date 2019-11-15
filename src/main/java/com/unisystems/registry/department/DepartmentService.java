@@ -1,6 +1,8 @@
 package com.unisystems.registry.department;
 
+import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,4 +30,14 @@ public class DepartmentService {
         return new GenericResponse<>(new MultipleDepartmentsResponse(departments));
 
     }
+
+    public GenericResponse<DepartmentResponse> getDepartmentWithId(long id) {
+        try {
+            return new GenericResponse<>(mapper.mapDepartmentResponseFromDepartment( repository.findById(id).orElseThrow(()
+                    -> new InvalidIdException("Department", id))));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
+    }
+
 }

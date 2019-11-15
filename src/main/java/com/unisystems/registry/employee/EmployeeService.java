@@ -1,5 +1,6 @@
 package com.unisystems.registry.employee;
 
+import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
 import com.unisystems.registry.InvalidIdException;
 import com.unisystems.registry.employee.search_employee_strategy.SearchEmployeeStrategyFactory;
@@ -35,11 +36,19 @@ public class EmployeeService {
     public GenericResponse<MultipleEmployeeResponse> getEmployeesInCriteria(String criteria, long criteriaId) {
         Iterable<Employee> retrievedEmployees = employeeRepository.findAll();
         SearchEmployeeStratrgy stratrgy = factory.makeStrategyForCriteria(criteria);
-        return new GenericResponse<>(mapper.mapEmployeeList(stratrgy.execute(criteriaId, retrievedEmployees)));
+        try {
+            return new GenericResponse<>(mapper.mapEmployeeList(stratrgy.execute(criteriaId, retrievedEmployees)));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
     }
 
-    public EmployeeResponse getEmployeeWithId(long id) throws InvalidIdException {
-        return mapper.mapEmployee( employeeRepository.findById(id).orElseThrow(()
-                -> new InvalidIdException("Employee", id)) );
+    public GenericResponse<EmployeeResponse> getEmployeeWithId(long id) {
+        try {
+            return new GenericResponse<>(mapper.mapEmployee(employeeRepository.findById(id).orElseThrow(()
+                    -> new InvalidIdException("Employee", id))));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
     }
 }

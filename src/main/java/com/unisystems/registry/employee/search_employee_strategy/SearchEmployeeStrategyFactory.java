@@ -1,20 +1,33 @@
 package com.unisystems.registry.employee.search_employee_strategy;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SearchEmployeeStrategyFactory {
+    @Autowired
+    SearchEmployeeByCompanyStrategy companyStrategy;
+
+    @Autowired
+    SearchEmployeeByBusinessUnitStrategy buStrategy;
+
+    @Autowired
+    SearchEmployeeByDepartmentStrategy deptStrategy;
+
+    @Autowired
+    SearchEmployeeByUnitStrategy unitStrategy;
+
     public SearchEmployeeStratrgy makeStrategyForCriteria(String criteria) {
         switch (criteria.toLowerCase()) {
             case "company":
-                return new SearchEmployeeByCompanyStrategy();
+                return companyStrategy;
             case "businessunit":
-                return new SearchEmployeeByBusinessUnitStrategy();
+                return buStrategy;
             case "department":
-                return new SearchEmployeeByDepartmentStrategy();
+                return deptStrategy;
             case "unit":
             default:
-                return new SearchEmployeeByUnitStrategy();
+                return unitStrategy;
         }
     }
 }
