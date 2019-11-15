@@ -2,14 +2,12 @@ package com.unisystems.registry.employee;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import com.unisystems.registry.StructureUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -34,6 +32,24 @@ public class EmployeeController {
                     employeeResponse.getData(),
                     null,
                     HttpStatus.OK
+            );
+        }
+    }
+
+    @GetMapping("/employees/{id}")
+    public ResponseEntity getEmployeeWithId(@PathVariable long id) {
+        try {
+            EmployeeResponse employeeResponse = service.getEmployeeWithId(id);
+            return new ResponseEntity(
+                    employeeResponse,
+                    null,
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity(
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    null,
+                    HttpStatus.BAD_REQUEST
             );
         }
     }
