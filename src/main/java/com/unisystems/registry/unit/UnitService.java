@@ -1,5 +1,6 @@
 package com.unisystems.registry.unit;
 
+
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
 import com.unisystems.registry.InvalidIdException;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UnitService {
@@ -36,19 +37,10 @@ public class UnitService {
     }
 
 
-
-
-
-    public GenericResponse<Optional<Unit>> getUnitsByUnitId(Long unitId)
-    {
-        return new GenericResponse<>(repository.findById(unitId));
-
-    }
-
     public GenericResponse<UnitResponse> getUnitWithId(long id) {
         try {
             return new GenericResponse<>(mapper.mapUnitResponseFromUnit( repository.findById(id).orElseThrow(()
-                    -> new InvalidIdException("Company", id))));
+                    -> new InvalidIdException("Unit", id))));
         } catch (InvalidIdException e) {
             return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
         }
