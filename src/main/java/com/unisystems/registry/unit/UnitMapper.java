@@ -13,12 +13,6 @@ public class UnitMapper {
     }
 
 
-    public UnitResponse mapUnit(Unit unit) {
-        return new UnitResponse(
-                unit.getId(),
-                unit.getName(),
-                unit.getDept()
-        );
-    }
+
 }
 
