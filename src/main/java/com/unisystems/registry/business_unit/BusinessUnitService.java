@@ -28,12 +28,23 @@ public class BusinessUnitService
         {
             businessUnits.add(mapper.mapBusinessUnitResponseFromBusinessUnit(businessUnit));
         }
+
         return new GenericResponse<>(new MultipleBusinessUnitResponse(businessUnits));
     }
 
     public GenericResponse<Optional<BusinessUnit>> getBusinessUnitById(Long id)
     {
         return new GenericResponse<>(repository.findById(id));
-
     }
+
+    public void saveChanges(BusinessUnit businessUnit)
+    {
+        repository.save(businessUnit);
+    }
+
+/*    public BusinessUnitResponse getBusinessUnitById(Long id) throws InvalidIdException
+    {
+        return mapper.mapBusinessUnitResponseFromBusinessUnit(repository.findById(id)
+                .orElseThrow(() -> new InvalidIdException("Business Unit", id)));
+    }*/
 }
