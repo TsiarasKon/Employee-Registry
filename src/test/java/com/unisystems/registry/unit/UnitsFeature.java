@@ -32,7 +32,7 @@ public class UnitsFeature {
     }
 
     @Test
-    public void getAllTours() {
+    public void getAllUnits() {
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/Units")
                     .contentType(MediaType.APPLICATION_JSON)

@@ -33,7 +33,7 @@ public class BusinessUnitsFeature {
     }
 
     @Test
-    public void getAllTours() {
+    public void getAllBusinessUnits() {
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/BusinessUnits")
                     .contentType(MediaType.APPLICATION_JSON)
