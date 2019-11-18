@@ -6,13 +6,16 @@ import com.unisystems.registry.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 
 @RestController
+@RequestMapping("/Units")
 public class UnitController {
     private final   UnitRepository repository;
 
@@ -22,7 +25,7 @@ public class UnitController {
     UnitService service;
 
 
-    @GetMapping("/Units")
+    @GetMapping("/list")
     public ResponseEntity getAllUnits(){
         try{
             GenericResponse<MultipleUnitResponse> response=service.getAllUnits();
@@ -42,7 +45,7 @@ public class UnitController {
         }
     }
 
-    @GetMapping("/Unit/{unitId}")
+    @GetMapping("/{unitId}")
     public ResponseEntity getUnitById(@PathVariable Long unitId)
     {
 

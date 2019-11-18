@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("Departments")
 public class DepartmentController {
 
     @Autowired
     private DepartmentService service;
 
-    @GetMapping("/allDepartments")
+    @GetMapping("/list")
     public ResponseEntity getAllDepartments() {
         try {
             GenericResponse<MultipleDepartmentsResponse> response = service.getAllDepartments();

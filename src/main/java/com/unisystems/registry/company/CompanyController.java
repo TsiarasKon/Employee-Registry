@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/Companies")
 public class CompanyController {
 
     @Autowired
     CompanyService service;
 
 
-    @GetMapping("/allCompanies")
+    @GetMapping("/list")
     public ResponseEntity getAllCompanies() {
 
         GenericResponse<MultipleCompaniesResponse> response = service.getAllCompany();
@@ -28,7 +29,7 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/Company/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getCompanyById(@PathVariable long id)
     {
         return service.getCompanyWithId(id).getResponseEntity(null,HttpStatus.BAD_REQUEST);

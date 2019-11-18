@@ -10,24 +10,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("Employees")
 public class EmployeeController {
 
     @Autowired
     EmployeeService service;
 
-    @GetMapping("/allEmployees")
+    @GetMapping("/list")
     public ResponseEntity getAllEmployees(){
         GenericResponse<MultipleEmployeeResponse> employeeResponse = service.getAllEmployees();
         return employeeResponse.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/employees/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getEmployeeWithId(@PathVariable long id) {
         return service.getEmployeeWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/employeesIn/{criteria}/{criteriaId}")
+    @GetMapping("/In/{criteria}/{criteriaId}")
     public ResponseEntity getEmployeesInCriteria(@PathVariable String criteria, @PathVariable long criteriaId) {
         if (! new StructureUtil().checkIfInStructure(criteria)) {       // invalid criteria
             return new ResponseEntity(
