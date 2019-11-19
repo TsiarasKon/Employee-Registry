@@ -17,6 +17,7 @@ public class RegistryApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		mockDataManager.generateAndSaveMockData();
+		// Uncomment to insert mock data to db:
+//		mockDataManager.generateAndSaveMockData();
 	}
 }
