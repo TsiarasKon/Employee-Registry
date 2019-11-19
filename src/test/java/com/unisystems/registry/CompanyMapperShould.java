@@ -4,7 +4,6 @@ package com.unisystems.registry;
 import com.unisystems.registry.company.Company;
 import com.unisystems.registry.company.CompanyMapper;
 import com.unisystems.registry.company.CompanyResponse;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class CompanyMapperShould {
 
     @Test
     public void keepName() {
-        Assert.assertEquals(expectedOutput.getName(),companyInput.getName());
+        Assert.assertEquals(expectedOutput.getCompanyName(),companyInput.getName());
     }
 
 }

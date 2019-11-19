@@ -1,13 +1,11 @@
 package com.unisystems.registry.company;
 
-import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +15,7 @@ public class CompanyController {
     CompanyService service;
 
 
-    @GetMapping("/allCompanies")
+    @GetMapping("/companies")
     public ResponseEntity getAllCompanies() {
 
         GenericResponse<MultipleCompaniesResponse> response = service.getAllCompany();
@@ -28,7 +26,7 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/Company/{id}")
+    @GetMapping("/companies/{id}")
     public ResponseEntity getCompanyById(@PathVariable long id)
     {
         return service.getCompanyWithId(id).getResponseEntity(null,HttpStatus.BAD_REQUEST);

@@ -19,7 +19,7 @@ public class BusinessUnitController
     @Autowired
     private BusinessUnitService service;
 
-    @GetMapping("/BusinessUnits")
+    @GetMapping("/business-units")
     public ResponseEntity getAllBusinessUnits()
     {
         try
@@ -48,7 +48,7 @@ public class BusinessUnitController
         }
     }
 
-    @GetMapping("/BusinessUnit/{id}")
+    @GetMapping("/business-units/{id}")
     public ResponseEntity getBusinessUnitById(@PathVariable Long id)
     {
         try
