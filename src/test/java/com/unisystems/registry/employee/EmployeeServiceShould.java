@@ -4,7 +4,7 @@ import com.unisystems.registry.GenericResponse;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -34,6 +34,7 @@ public class EmployeeServiceShould {
     private Iterable<Employee> mockedEmployees = new ArrayList<Employee>() {
         {
             add(new Employee("Bruce","Willis","69846383", LocalDate.now(),EmployeeContractType.EXTERNAL,EmployeePosition.ACCOUNTANT));
+            add(new Employee("Bruce","Willis","69846383", LocalDate.now(),EmployeeContractType.EXTERNAL,EmployeePosition.ACCOUNTANT));
         }
     };
 
@@ -60,7 +61,6 @@ public class EmployeeServiceShould {
     }
 
     @Test
-    @Ignore
     public void returnsListOfGenericResponse() {
         GenericResponse<MultipleEmployeeResponse> output = service.getAllEmployees();
         Assert.assertEquals(2, output.getData().getEmployeeResponses().size());

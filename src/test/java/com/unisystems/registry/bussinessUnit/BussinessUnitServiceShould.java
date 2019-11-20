@@ -5,7 +5,7 @@ import com.unisystems.registry.business_unit.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -32,6 +32,7 @@ public class BussinessUnitServiceShould {
     private Iterable<BusinessUnit> mockedBusinessUnits = new ArrayList<BusinessUnit>() {
         {
             add(new BusinessUnit("businessUnit"));
+            add(new BusinessUnit("business"));
         }
     };
 
@@ -46,7 +47,7 @@ public class BussinessUnitServiceShould {
 
     @Test
     public void retrieveBusinessUnitsFromRepository() {
-        service.getAllBusinessUnits().getData().getBusinessUnitResponse();
+        service.getAllBusinessUnits();
         Mockito.verify(businessUnitRepository).findAll();
     }
 
@@ -57,7 +58,6 @@ public class BussinessUnitServiceShould {
     }
 
     @Test
-    @Ignore
     public void returnsListOfGenericResponse() {
         GenericResponse<MultipleBusinessUnitResponse> output = service.getAllBusinessUnits();
         Assert.assertEquals(2, output.getData().getBusinessUnitResponse().size());

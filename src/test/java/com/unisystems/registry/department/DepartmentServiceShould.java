@@ -5,7 +5,7 @@ import com.unisystems.registry.GenericResponse;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -31,6 +31,7 @@ public class DepartmentServiceShould {
     private Iterable<Department> mockedDepartments = new ArrayList<Department>() {
         {
             add(new Department("department"));
+            add(new Department("deptName"));
         }
     };
 
@@ -56,7 +57,6 @@ public class DepartmentServiceShould {
     }
 
     @Test
-    @Ignore
     public void returnsListOfGenericResponse() {
         GenericResponse<MultipleDepartmentsResponse> output = service.getAllDepartments();
         Assert.assertEquals(2, output.getData().getDepartmentResponse().size());

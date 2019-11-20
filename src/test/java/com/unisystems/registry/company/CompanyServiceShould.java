@@ -5,7 +5,7 @@ import com.unisystems.registry.GenericResponse;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -31,6 +31,7 @@ public class CompanyServiceShould {
     private Iterable<Company> mockedCompanies = new ArrayList<Company>() {
         {
             add(new Company("UniSystems"));
+            add(new Company("Uni"));
         }
     };
 
@@ -45,18 +46,17 @@ public class CompanyServiceShould {
 
     @Test
     public void retrieveCompaniesFromRepository() {
-        service.getAllCompany().getData().getCompanyResponses();
+        service.getAllCompany();
         Mockito.verify(companyRepository).findAll();
     }
 
     @Test
     public void usesCompanyMapper() {
         service.getAllCompany().getData().getCompanyResponses();
-        Mockito.verify(mapper, times(1)).mapCompanyResponseFromCompany(any());
+        Mockito.verify(mapper, times(2)).mapCompanyResponseFromCompany(any());
     }
 
     @Test
-    @Ignore
     public void returnsListOfGenericResponse() {
         GenericResponse<MultipleCompaniesResponse> output = service.getAllCompany();
         Assert.assertEquals(2, output.getData().getCompanyResponses().size());

@@ -33,7 +33,7 @@ public class UnitMapperShould {
         Assert.assertEquals("Different Name",output.getName());
     }
     @Test
-    public void keepSameDepartment(){Assert.assertEquals(unitInput.getDept().getName(),output.getDepartment().getName());}
+    public void keepSameDepartment(){Assert.assertEquals(unitInput.getDept().getName(),output.getDepartmentName());}
 
 
 

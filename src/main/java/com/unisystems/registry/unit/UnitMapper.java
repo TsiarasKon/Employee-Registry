@@ -8,7 +8,7 @@ public class UnitMapper {
         return new UnitResponse(
                 unit.getId(),
                 unit.getName(),
-                unit.getDept()
+                unit.getDept().getName()
         );
     }
 
