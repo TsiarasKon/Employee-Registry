@@ -10,6 +10,9 @@ import com.unisystems.registry.employee.Employee;
 import com.unisystems.registry.employee.EmployeeContractType;
 import com.unisystems.registry.employee.EmployeePosition;
 import com.unisystems.registry.employee.EmployeeRepository;
+import com.unisystems.registry.task.Status;
+import com.unisystems.registry.task.Task;
+import com.unisystems.registry.task.TaskRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class RegistryApplication implements CommandLineRunner {
 	@Autowired
     EmployeeRepository employeeRepository;
 
+	@Autowired
+	TaskRepository taskRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(RegistryApplication.class, args);
 	}
@@ -41,6 +47,8 @@ public class RegistryApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 		// ideas for company structure taken from: https://www.unisystems.com/markets
+		Task task = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, Status.NEW,null);
+
 		Company uniSystems = new Company("UniSystems");
 
 		BusinessUnit financeBU = new BusinessUnit("Finance");
@@ -98,6 +106,7 @@ public class RegistryApplication implements CommandLineRunner {
 		employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
 		employeeArr[9].setUnit(t5gU);
 
+		taskRepository.save(task);
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
