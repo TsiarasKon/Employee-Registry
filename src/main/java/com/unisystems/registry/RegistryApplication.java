@@ -10,6 +10,9 @@ import com.unisystems.registry.employee.Employee;
 import com.unisystems.registry.employee.EmployeeContractType;
 import com.unisystems.registry.employee.EmployeePosition;
 import com.unisystems.registry.employee.EmployeeRepository;
+import com.unisystems.registry.task.Status;
+import com.unisystems.registry.task.Task;
+import com.unisystems.registry.task.TaskRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class RegistryApplication implements CommandLineRunner {
@@ -33,6 +37,9 @@ public class RegistryApplication implements CommandLineRunner {
 	UnitRepository unitRepository;
 	@Autowired
     EmployeeRepository employeeRepository;
+
+	@Autowired
+	TaskRepository taskRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RegistryApplication.class, args);
@@ -70,6 +77,8 @@ public class RegistryApplication implements CommandLineRunner {
 		Unit t5gU = new Unit("5G");
 		t5gU.setDept(networkingD);
 
+
+
 		// ideas for employees definitely not taken from: https://www.unisystems.com
 		Employee[] employeeArr = new Employee[10];
 		employeeArr[0] = new Employee("Konstantinos", "Tsiaras", "Kolokotroni 11, Agia Paraskevi", "6980429197", LocalDate.of(2019, 11, 2), null, true, EmployeeContractType.INTERNAL, EmployeePosition.PROGRAMMER);
@@ -103,5 +112,18 @@ public class RegistryApplication implements CommandLineRunner {
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
+
+		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,"asdf" );
+		Task task2 = new Task("protoTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,"lala" );
+
+		task1.setEmployee(employeeArr[1]);
+		task1.setEmployee(employeeArr[3]);
+		task2.setEmployee(employeeArr[5]);
+		task2.setEmployee(employeeArr[1]);
+		taskRepository.save(task1);
+		taskRepository.save(task2);
+
 	}
+
+
 }
