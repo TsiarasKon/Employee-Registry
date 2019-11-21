@@ -2,6 +2,8 @@ package com.unisystems.registry.task;
 
 import com.unisystems.registry.employee.Employee;
 
+import java.util.List;
+
 public class TaskResponseById {
 
     private long id;
@@ -9,15 +11,35 @@ public class TaskResponseById {
     private String desc;
     private String difficulty;
     private Status status;
-    private Employee employee;
+    private String employee;
 
-    public TaskResponseById(long id, String title, String desc, String difficulty, Status status, Employee employee) {
+    private List<String> updates;
+
+    public List<String> getUpdates() {
+        return updates;
+    }
+
+    public void setUpdates(List<String> updates) {
+        this.updates = updates;
+    }
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
+
+    public TaskResponseById(long id, String title, String desc, String difficulty, Status status, String employee, List<String> updates) {
         this.id = id;
         this.title = title;
         this.desc = desc;
         this.difficulty = difficulty;
         this.status = status;
         this.employee = employee;
+        this.updates = updates;
     }
 
     public long getId() {
@@ -60,11 +82,5 @@ public class TaskResponseById {
         this.status = status;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
 }

@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class TaskController {
@@ -25,9 +24,11 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{taskId}")
-    public MultiTaskResponseById getTaskWithId(@PathVariable long taskId)
-    {
-        return new MultiTaskResponseById(service.getTaskWithId(taskId));
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity getTaskWithId(@PathVariable long taskId) {
+        return new ResponseEntity(new MultiTaskResponseById(
+                service.getTaskWithId(taskId)), null,
+                HttpStatus.OK);
     }
 
 //    @GetMapping("/{uCriteria}/{id}")

@@ -1,7 +1,6 @@
 package com.unisystems.registry.task;
 
 import com.unisystems.registry.GenericResponse;
-import com.unisystems.registry.InvalidIdException;
 import com.unisystems.registry.employee.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,15 +27,10 @@ public class TaskService {
     }
 
     public List<TaskResponseById> getTaskWithId(long taskId){
-        Iterable<Task> retrievedTasks = repository.findAll();
+        Task retrievedTask = repository.findById(taskId).get();
         List<TaskResponseById> tasks = new ArrayList<>();
         List<Employee> employees = new ArrayList<>();
-        for (Task task : retrievedTasks){
-            if (task.getId()==taskId){
-                tasks.add( mapper.mapTaskResponseFromTaskiD(task));
-                //tasks.add(tasksToAdd);
-            }
-        }
+                tasks.add(mapper.mapTaskResponseFromTaskId(retrievedTask));
         return tasks;
     }
 

@@ -113,8 +113,8 @@ public class RegistryApplication implements CommandLineRunner {
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
 
-		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,"asdf" );
-		Task task2 = new Task("protoTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,"lala" );
+		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,null);
+		Task task2 = new Task("deuteroTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,null );
 
 		task1.setEmployee(employeeArr[1]);
 		task1.setEmployee(employeeArr[3]);
@@ -122,6 +122,10 @@ public class RegistryApplication implements CommandLineRunner {
 		task2.setEmployee(employeeArr[1]);
 		taskRepository.save(task1);
 		taskRepository.save(task2);
+
+
+
+
 
 	}
 

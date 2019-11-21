@@ -17,16 +17,17 @@ public class Task {
     private int estimationB;
     private int estimationC;
     private Status status;
-    private String updates;
+    @ElementCollection
+    private List<String> updates;
 
     @ManyToOne
     private Employee employee;
 
-
     public Task() {
     }
 
-    public Task(String title, String desc, int estimationA, int estimationB, int estimationC, Status status, String updates) {
+
+    public Task(String title, String desc, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
         this.title = title;
         this.desc = desc;
         this.estimationA = estimationA;
@@ -93,13 +94,14 @@ public class Task {
         this.status = status;
     }
 
-    public String getUpdates() {
+    public List<String> getUpdates() {
         return updates;
     }
 
-    public void setUpdates(String updates) {
+    public void setUpdates(List<String> updates) {
         this.updates = updates;
     }
+
 
     public Employee getEmployee() {
         return employee;
