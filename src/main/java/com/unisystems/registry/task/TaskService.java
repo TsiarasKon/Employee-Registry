@@ -32,7 +32,7 @@ public class TaskService {
 
     public GenericResponse<TaskResponse> getTaskWithId(long id) {
         try {
-            return new GenericResponse<>(mapper.MapTask(taskRepository.findById(id).orElseThrow(()
+            return new GenericResponse<>(mapper.MapTaskId(taskRepository.findById(id).orElseThrow(()
                     -> new InvalidIdException("Task", id))));
         } catch (InvalidIdException e) {
             return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
@@ -49,18 +49,14 @@ public class TaskService {
     }
 
     private List<TaskResponse> getTaskResponses(long taskId) throws InvalidIdException {
-        Iterable<Task> retrievedTasks = taskRepository.findAll();
         List<TaskResponse> tasks = new ArrayList<>();
 
         if (getTaskWithId(taskId).getError() != null) {
             throw new InvalidIdException("Task", taskId);
         }
 
-        for(Task task : retrievedTasks){
-            if(task.getId() == taskId) {
-                tasks.add(mapper.MapTaskId(task));
-            }
-        }
+        tasks.add(getTaskWithId(taskId).getData());
+
         return tasks;
     }
 }
