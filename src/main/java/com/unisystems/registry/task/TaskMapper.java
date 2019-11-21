@@ -16,8 +16,8 @@ public class TaskMapper {
         );
     }
 
-    public TaskResponse MapTaskId(Task task){
-        return new TaskResponse(
+    public TaskResponseId MapTaskId(Task task){
+        return new TaskResponseId(
                 task.getId(),
                 task.getTitle(),
                 task.getDesc(),

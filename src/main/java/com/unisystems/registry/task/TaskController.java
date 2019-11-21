@@ -20,12 +20,12 @@ public class TaskController {
     @GetMapping("/tasks")
     public ResponseEntity getAllTasks(){
         GenericResponse<MultipleTaskResponse> taskResponse = taskService.getAllTasks();
-        return taskResponse.getResponseEntity(null, HttpStatus.OK);
+        return taskResponse.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getTaskById/{taskId}")
     public ResponseEntity getTaskById(@PathVariable long taskId){
-        GenericResponse<MultipleTaskResponse> taskById = taskService.getTaskById(taskId);
-        return taskById.getResponseEntity(null, HttpStatus.OK);
+        GenericResponse<MultipleTaskResponseId> taskById = taskService.getTaskById(taskId);
+        return taskById.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 }
