@@ -19,9 +19,12 @@ import java.util.Optional;
 @RestController
 public class BusinessUnitController
 {
-
-    @Autowired
     private BusinessUnitService service;
+
+    public BusinessUnitController(BusinessUnitService service)
+    {
+        this.service = service;
+    }
 
     @GetMapping("/BusinessUnits")
     public ResponseEntity<Object> getAllBusinessUnits()
@@ -43,7 +46,7 @@ public class BusinessUnitController
         );
      }
 
-    @GetMapping("/BusinessUnit/{id}")
+    @GetMapping("/BusinessUnits/{id}")
     public ResponseEntity<Object> getBusinessUnitById(@PathVariable Long id)
     {
         GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
@@ -62,10 +65,10 @@ public class BusinessUnitController
             );
     }
 
-    @PostMapping(value = "/BusinessUnit", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/BusinessUnits", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> createBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit)
     {
-        service.saveChanges(businessUnit);
+       service.saveChanges(businessUnit);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -76,7 +79,7 @@ public class BusinessUnitController
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/BusinessUnit/{id}")
+    @PutMapping("/BusinessUnits/{id}")
     public ResponseEntity<Object> updateBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit,
                                                      @PathVariable long id)
     {
