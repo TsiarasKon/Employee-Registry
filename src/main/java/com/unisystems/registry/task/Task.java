@@ -4,6 +4,7 @@ import com.unisystems.registry.employee.Employee;
 
 import javax.persistence.*;
 import java.util.List;
+
 @Entity
 public class Task {
 
@@ -20,12 +21,9 @@ public class Task {
     @ElementCollection
     private List<String> updates;
 
-    @ManyToOne
-    private Employee employee;
 
-    public Task() {
-    }
-
+    @ManyToMany
+    private List<Employee> assignedEmployee;
 
     public Task(String title, String desc, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
         this.title = title;
@@ -35,8 +33,14 @@ public class Task {
         this.estimationC = estimationC;
         this.status = status;
         this.updates = updates;
-        this.employee = employee;
+        this.assignedEmployee = assignedEmployee;
     }
+
+    public Task() {
+    }
+
+
+
 
     public long getId() {
         return id;
@@ -102,12 +106,11 @@ public class Task {
         this.updates = updates;
     }
 
-
-    public Employee getEmployee() {
-        return employee;
+    public List<Employee> getAssignedEmployee() {
+        return assignedEmployee;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setAssignedEmployee(List<Employee> assignedEmployee) {
+        this.assignedEmployee = assignedEmployee;
     }
 }

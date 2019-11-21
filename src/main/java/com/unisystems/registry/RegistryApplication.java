@@ -107,19 +107,23 @@ public class RegistryApplication implements CommandLineRunner {
 		employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
 		employeeArr[9].setUnit(t5gU);
 
+
+		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,null);
+		Task task2 = new Task("deuteroTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,null );
+
+
+
+		task1.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
+		task2.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[0]));
+
+
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
 
-		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,null);
-		Task task2 = new Task("deuteroTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,null );
 
-		task1.setEmployee(employeeArr[1]);
-		task1.setEmployee(employeeArr[3]);
-		task2.setEmployee(employeeArr[5]);
-		task2.setEmployee(employeeArr[1]);
 		taskRepository.save(task1);
 		taskRepository.save(task2);
 

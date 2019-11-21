@@ -1,10 +1,6 @@
 package com.unisystems.registry.task;
 
-import com.unisystems.registry.employee.Employee;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class TaskMapper {
@@ -19,14 +15,14 @@ public class TaskMapper {
                 task.getDesc(),
                 getDifficulty(task),
                 task.getStatus(),
-                getEmployeeFullName(task),
+                task.getAssignedEmployee(),
                 task.getUpdates()
         );
     }
 
-    private String getEmployeeFullName(Task task) {
-        return task.getEmployee().getFirstName()+" "+task.getEmployee().getLastName();
-    }
+//    private String getEmployeeFullName(Task task) {
+//        return task.getEmployee().getFirstName()+" "+task.getEmployee().getLastName();
+//    }
 
 
     public TaskResponse mapTaskResponseFromTask(Task task){

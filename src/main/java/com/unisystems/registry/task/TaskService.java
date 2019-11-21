@@ -29,7 +29,7 @@ public class TaskService {
     public List<TaskResponseById> getTaskWithId(long taskId){
         Task retrievedTask = repository.findById(taskId).get();
         List<TaskResponseById> tasks = new ArrayList<>();
-        List<Employee> employees = new ArrayList<>();
+        //List<Employee> employees = new ArrayList<>();
                 tasks.add(mapper.mapTaskResponseFromTaskId(retrievedTask));
         return tasks;
     }

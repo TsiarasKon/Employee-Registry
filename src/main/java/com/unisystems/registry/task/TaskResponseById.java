@@ -11,9 +11,28 @@ public class TaskResponseById {
     private String desc;
     private String difficulty;
     private Status status;
-    private String employee;
+    private List<Employee> assignedEmployees;
 
     private List<String> updates;
+
+
+    public TaskResponseById(long id, String title, String desc, String difficulty, Status status, List<Employee> assignedEmployees, List<String> updates) {
+        this.id = id;
+        this.title = title;
+        this.desc = desc;
+        this.difficulty = difficulty;
+        this.status = status;
+        this.assignedEmployees = assignedEmployees;
+        this.updates = updates;
+    }
+
+    public List<Employee> getAssignedEmployees() {
+        return assignedEmployees;
+    }
+
+    public void setAssignedEmployees(List<Employee> assignedEmployees) {
+        this.assignedEmployees = assignedEmployees;
+    }
 
     public List<String> getUpdates() {
         return updates;
@@ -23,24 +42,11 @@ public class TaskResponseById {
         this.updates = updates;
     }
 
-    public String getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(String employee) {
-        this.employee = employee;
-    }
 
 
-    public TaskResponseById(long id, String title, String desc, String difficulty, Status status, String employee, List<String> updates) {
-        this.id = id;
-        this.title = title;
-        this.desc = desc;
-        this.difficulty = difficulty;
-        this.status = status;
-        this.employee = employee;
-        this.updates = updates;
-    }
+
+
+
 
     public long getId() {
         return id;
