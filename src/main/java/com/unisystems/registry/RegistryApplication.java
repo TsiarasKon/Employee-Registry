@@ -48,6 +48,8 @@ public class RegistryApplication implements CommandLineRunner {
 	public void run(String... args) {
 		// ideas for company structure taken from: https://www.unisystems.com/markets
 		Task task = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, Status.NEW,null);
+		Task task2 = new Task("New Website", "Create a website for the product.",5,4,6, Status.NEW,null);
+		Task task3 = new Task("New database", "Integrate sql db.",2,3,3, Status.NEW,null);
 
 		Company uniSystems = new Company("UniSystems");
 
@@ -106,11 +108,16 @@ public class RegistryApplication implements CommandLineRunner {
 		employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
 		employeeArr[9].setUnit(t5gU);
 
-		taskRepository.save(task);
+		task.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
+		task2.setAssignedEmployee(Arrays.asList(employeeArr[2]));
+		task3.setAssignedEmployee(Arrays.asList(employeeArr[0]));
+
+
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
+		taskRepository.saveAll(Arrays.asList(task,task2,task3));
 	}
 }

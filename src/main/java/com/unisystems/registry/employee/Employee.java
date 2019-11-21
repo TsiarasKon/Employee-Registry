@@ -1,9 +1,11 @@
 package com.unisystems.registry.employee;
 
+import com.unisystems.registry.task.Task;
 import com.unisystems.registry.unit.Unit;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Employee {
@@ -25,6 +27,9 @@ public class Employee {
     private EmployeePosition employeePosition;
     @ManyToOne
     private Unit unit;
+
+    @ManyToMany
+    private List<Task> task;
 
     public Employee() {
     }

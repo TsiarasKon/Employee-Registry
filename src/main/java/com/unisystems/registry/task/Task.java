@@ -13,23 +13,23 @@ public class Task {
 
     private String title;
     private String desc;
-    private int estimationa; //double or float is better
-    private int estimationb;
-    private int estimationc;
+    private int estimationA; //double or float is better
+    private int estimationB;
+    private int estimationC;
     private Status status;
 
     @ElementCollection
     private List<String> updates;
 
     @ManyToMany
-    private List<Employee> assignedEmployees;
+    private List<Employee> assignedEmployee;
 
-    public Task(String title, String desc, int estimationa, int estimationb, int estimationc, Status status, List<String> updates) {
+    public Task(String title, String desc, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
         this.title = title;
         this.desc = desc;
-        this.estimationa = estimationa;
-        this.estimationb = estimationb;
-        this.estimationc = estimationc;
+        this.estimationA = estimationA;
+        this.estimationB = estimationB;
+        this.estimationC = estimationC;
         this.status = status;
         this.updates = updates;
     }
@@ -37,12 +37,12 @@ public class Task {
     public Task() {
     }
 
-    public List<Employee> getAssignedEmployees() {
-        return assignedEmployees;
+    public List<Employee> getAssignedEmployee() {
+        return assignedEmployee;
     }
 
-    public void setAssignedEmployees(List<Employee> assignedEmployees) {
-        this.assignedEmployees = assignedEmployees;
+    public void setAssignedEmployee(List<Employee> assignedEmployee) {
+        this.assignedEmployee = assignedEmployee;
     }
 
     public long getId() {
@@ -69,28 +69,28 @@ public class Task {
         this.desc = desc;
     }
 
-    public int getEstimationa() {
-        return estimationa;
+    public int getEstimationA() {
+        return estimationA;
     }
 
-    public void setEstimationa(int estimationa) {
-        this.estimationa = estimationa;
+    public void setEstimationA(int estimationA) {
+        this.estimationA = estimationA;
     }
 
-    public int getEstimationb() {
-        return estimationb;
+    public int getEstimationB() {
+        return estimationB;
     }
 
-    public void setEstimationb(int estimationb) {
-        this.estimationb = estimationb;
+    public void setEstimationB(int estimationB) {
+        this.estimationB = estimationB;
     }
 
-    public int getEstimationc() {
-        return estimationc;
+    public int getEstimationC() {
+        return estimationC;
     }
 
-    public void setEstimationc(int estimationc) {
-        this.estimationc = estimationc;
+    public void setEstimationC(int estimationC) {
+        this.estimationC = estimationC;
     }
 
     public Status getStatus() {

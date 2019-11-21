@@ -16,18 +16,30 @@ public class TaskMapper {
         );
     }
 
+    public TaskResponse MapTaskId(Task task){
+        return new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getDesc(),
+                getDifficulty(task),
+                getStatus(task),
+                task.getAssignedEmployee(),
+                task.getUpdates()
+        );
+    }
+
     private String getStatus(Task task) {
         return task.getStatus().toString();
     }
 
     private String getDifficulty(Task task) {
-        int difficultyNumber = (task.getEstimationa() + task.getEstimationb() + task.getEstimationc())/3;
+        int average = (task.getEstimationA() + task.getEstimationB() + task.getEstimationC())/3;
         String difficulty = null;
-        if(difficultyNumber<2)
+        if(average<2)
             difficulty = "EASY";
-        else if(difficultyNumber<=4)
+        else if(average<=4)
             difficulty = "MEDIUM";
-        else if (difficultyNumber>5)
+        else if (average>=5)
             difficulty = "HARD";
         return difficulty;
     }
