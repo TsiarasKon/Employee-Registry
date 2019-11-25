@@ -1,6 +1,7 @@
 package com.unisystems.registry.task;
 
 import com.unisystems.registry.employee.Employee;
+import com.unisystems.registry.employee.EmployeeResponse;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class TaskResponseId {
     private String desc;
     private String difficulty;
     private String status;
-    private List<Employee> assignedEmployees;
+    private List<EmployeeResponse> assignedEmployees;
     private List<String> updates;
 
-    public TaskResponseId(long id, String title, String desc, String difficulty, String status, List<Employee> assignedEmployees, List<String> updates) {
+    public TaskResponseId(long id, String title, String desc, String difficulty, String status, List<EmployeeResponse> assignedEmployees, List<String> updates) {
         this.id = id;
         this.title = title;
         this.desc = desc;
@@ -23,11 +24,11 @@ public class TaskResponseId {
         this.updates = updates;
     }
 
-    public List<Employee> getAssignedEmployees() {
+    public List<EmployeeResponse> getAssignedEmployees() {
         return assignedEmployees;
     }
 
-    public void setAssignedEmployees(List<Employee> assignedEmployees) {
+    public void setAssignedEmployees(List<EmployeeResponse> assignedEmployees) {
         this.assignedEmployees = assignedEmployees;
     }
 

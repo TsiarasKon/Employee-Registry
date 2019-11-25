@@ -1,12 +1,18 @@
 package com.unisystems.registry.task;
 
-
+import com.unisystems.registry.employee.Employee;
+import com.unisystems.registry.employee.EmployeeMapper;
+import com.unisystems.registry.employee.EmployeeResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class TaskMapper {
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public TaskResponse mapTask(Task task){
         return new TaskResponse(
@@ -25,9 +31,16 @@ public class TaskMapper {
                 task.getDesc(),
                 getDifficulty(task),
                 getStatus(task),
-                task.getAssignedEmployee(),
+                getAssignedEmployees(task),
                 task.getUpdates()
         );
+    }
+
+    private List<EmployeeResponse> getAssignedEmployees(Task task) {
+        List<EmployeeResponse> employeeResponses = new ArrayList<>();
+        for(Employee e : task.getAssignedEmployee())
+            employeeResponses.add(employeeMapper.mapEmployee(e));
+        return employeeResponses;
     }
 
     public MultipleTaskResponseId mapTaskList(List<Task> tasks) {
