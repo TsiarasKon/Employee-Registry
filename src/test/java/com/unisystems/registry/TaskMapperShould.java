@@ -24,7 +24,7 @@ public class TaskMapperShould {
 
     @Test
     public void mapTaskFromTaskResponse(){
-        TaskResponse output = mapper.MapTask(taskInput);
+        TaskResponse output = mapper.mapTask(taskInput);
         Assert.assertThat(expectedOutput,Matchers.samePropertyValuesAs(output));
     }
 }

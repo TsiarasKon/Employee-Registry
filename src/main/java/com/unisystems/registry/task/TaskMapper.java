@@ -3,10 +3,12 @@ package com.unisystems.registry.task;
 
 import org.springframework.stereotype.Component;
 
+import java.util.*;
+
 @Component
 public class TaskMapper {
 
-    public TaskResponse MapTask(Task task){
+    public TaskResponse mapTask(Task task){
         return new TaskResponse(
                 task.getId(),
                 task.getTitle(),
@@ -16,7 +18,7 @@ public class TaskMapper {
         );
     }
 
-    public TaskResponseId MapTaskId(Task task){
+    public TaskResponseId mapTaskId(Task task){
         return new TaskResponseId(
                 task.getId(),
                 task.getTitle(),
@@ -26,6 +28,14 @@ public class TaskMapper {
                 task.getAssignedEmployee(),
                 task.getUpdates()
         );
+    }
+
+    public MultipleTaskResponseId mapTaskList(List<Task> tasks) {
+        List<TaskResponseId> taskResponse= new ArrayList<>();
+        for (Task t : tasks) {
+            taskResponse.add(mapTaskId(t));
+        }
+        return new MultipleTaskResponseId(taskResponse);
     }
 
     private String getStatus(Task task) {

@@ -49,7 +49,9 @@ public class RegistryApplication implements CommandLineRunner {
 		// ideas for company structure taken from: https://www.unisystems.com/markets
 		Task task = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, Status.NEW,null);
 		Task task2 = new Task("New Website", "Create a website for the product.",5,4,6, Status.NEW,null);
-		Task task3 = new Task("New database", "Integrate sql db.",2,3,3, Status.NEW,null);
+		Task task3 = new Task("New database", "Integrate sql db.",2,1,1, Status.NEW,null);
+		Task task4 = new Task("New database4", "Integrate sql db4.",2,1,1, Status.NEW,null);
+		Task task5 = new Task("New database5", "Integrate sql db5.",2,1,1, Status.NEW,null);
 
 		Company uniSystems = new Company("UniSystems");
 
@@ -111,13 +113,14 @@ public class RegistryApplication implements CommandLineRunner {
 		task.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
 		task2.setAssignedEmployee(Arrays.asList(employeeArr[2]));
 		task3.setAssignedEmployee(Arrays.asList(employeeArr[0]));
-
+		task4.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[3],employeeArr[4]));
+		task5.setAssignedEmployee(Arrays.asList(employeeArr[4],employeeArr[5]));
 
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
-		taskRepository.saveAll(Arrays.asList(task,task2,task3));
+		taskRepository.saveAll(Arrays.asList(task,task2,task3,task4,task5));
 	}
 }
