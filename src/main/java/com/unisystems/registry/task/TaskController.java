@@ -33,7 +33,7 @@ public class TaskController {
     }
 
     @GetMapping("/taskDifficulty/{difficulty}")
-    public ResponseEntity getEmployeesInCriteria(@PathVariable String difficulty) {
+    public ResponseEntity getTasksInCriteria(@PathVariable String difficulty) {
         if (! new difficultyComparison().checkIfInStructure(difficulty)) {
             return new ResponseEntity(
                     new GenericError(1, "Input Error", "Difficulty '" + difficulty + "' does not exist"),
@@ -44,8 +44,13 @@ public class TaskController {
         return taskService.getTasksByDifficulty(difficulty, null).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/taskDifficulty/difficulty/{assignedEmployees}")
+    public ResponseEntity getTasksByEmployees(@PathVariable Long assignedEmployees) {
+        return taskService.getTasksByDifficulty(null, assignedEmployees).getResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/taskDifficulty/{difficulty}/{assignedEmployees}")
-    public ResponseEntity getEmployeesInCriteria(@PathVariable String difficulty, @PathVariable long assignedEmployees) {
+    public ResponseEntity getTasksInCriteria(@PathVariable String difficulty, @PathVariable long assignedEmployees) {
         if (! new difficultyComparison().checkIfInStructure(difficulty)) {
             return new ResponseEntity(
                     new GenericError(1, "Input Error", "Difficulty '" + difficulty + "' does not exist"),

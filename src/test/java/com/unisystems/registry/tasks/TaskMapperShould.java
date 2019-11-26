@@ -1,4 +1,4 @@
-package com.unisystems.registry;
+package com.unisystems.registry.tasks;
 
 import com.unisystems.registry.task.Status;
 import com.unisystems.registry.task.Task;

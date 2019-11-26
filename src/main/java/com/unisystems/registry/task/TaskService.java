@@ -65,12 +65,26 @@ public class TaskService {
 
     public GenericResponse<MultipleTaskResponseId> getTasksByDifficulty(String difficulty, Long assignedEmployeesNumber){
         Iterable<Task> retrievedTasks = taskRepository.findAll();
-
-        SearchTaskStrategy strategy = factory.makeStrategyForDifficulty(difficulty);
-        try{
-            return new GenericResponse<>(mapper.mapTaskList(strategy.execute(assignedEmployeesNumber,retrievedTasks)));
-        } catch (InvalidIdException e) {
-            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        if(difficulty == null) {
+            return getTasksByNumberOfEmployees(assignedEmployeesNumber, retrievedTasks);
         }
+        else{
+            SearchTaskStrategy strategy = factory.makeStrategyForDifficulty(difficulty);
+            try {
+                return new GenericResponse<>(mapper.mapTaskList(strategy.execute(assignedEmployeesNumber, retrievedTasks)));
+            } catch (InvalidIdException e) {
+                return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+            }
+        }
+    }
+
+    private GenericResponse<MultipleTaskResponseId> getTasksByNumberOfEmployees(Long assignedEmployeesNumber, Iterable<Task> retrievedTasks) {
+        List<TaskResponseId> taskResponseIdList = new ArrayList<>();
+        for (Task task : retrievedTasks) {
+            if(assignedEmployeesNumber == task.getAssignedEmployee().size()){
+                taskResponseIdList.add(mapper.mapTaskId(task));
+            }
+        }
+        return new GenericResponse<>(new MultipleTaskResponseId(taskResponseIdList));
     }
 }
