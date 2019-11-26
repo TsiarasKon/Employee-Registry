@@ -43,5 +43,56 @@ public class TaskFeature {
         }
     }
 
-    
+    @Test
+    public void getTasksById() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/getTaskById/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(TaskByIdJson.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void getDifficulty() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.json1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getDifficultyWithEmployeeNumber() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.json2));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getDifficultyByEmployeeNumber() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/difficulty/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.json3));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
