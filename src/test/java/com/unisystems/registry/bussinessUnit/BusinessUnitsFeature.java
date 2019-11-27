@@ -45,4 +45,18 @@ public class BusinessUnitsFeature {
         }
 
     }
+
+    @Test
+    public void getAllBusinessUnitById() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/BusinessUnit/2")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(BusinessUnitByIdJSon.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

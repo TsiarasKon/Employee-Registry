@@ -2,6 +2,7 @@ package com.unisystems.registry.employee;
 
 import com.unisystems.registry.RegistryApplication;
 import com.unisystems.registry.unit.AllUnitsJson;
+import com.unisystems.registry.unit.UnitByIdJson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,4 +45,35 @@ public class EmployeesFeature {
         }
 
     }
+
+    @Test
+    public void getEmployeeById(){
+        try{
+            mockMvc.perform(MockMvcRequestBuilders.get("/employees/2")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(EmployeeByIdJSon.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Test
+    public void getEmployeesByCriteria(){
+        try{
+            mockMvc.perform(MockMvcRequestBuilders.get("/employeesIn/Unit/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(AllEmployeesByCriteriaJSon.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }

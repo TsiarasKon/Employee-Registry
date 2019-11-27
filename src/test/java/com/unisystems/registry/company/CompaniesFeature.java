@@ -43,4 +43,18 @@ public class CompaniesFeature {
         }
 
     }
+
+    @Test
+    public void getCompanyById() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/Company/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(CompanyByIdJSon.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
