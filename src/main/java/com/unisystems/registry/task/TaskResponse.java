@@ -6,20 +6,16 @@ import java.util.List;
 
 public class TaskResponse {
     private long id;
-
     private String title;
     private String desc;
-    private String dificulty;
-    private Status status;
+    private String difficulty;
+    private String status;
 
-
-    //private Employee assignedEmployees;
-
-    public TaskResponse(long id, String title, String desc, String dificulty, Status status) {
+    public TaskResponse(long id, String title, String desc, String difficulty, String status) {
         this.id = id;
         this.title = title;
         this.desc = desc;
-        this.dificulty = dificulty;
+        this.difficulty = difficulty;
         this.status = status;
     }
 
@@ -47,19 +43,19 @@ public class TaskResponse {
         this.desc = desc;
     }
 
-    public String getDificulty() {
-        return dificulty;
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public void setDificulty(String dificulty) {
-        this.dificulty = dificulty;
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

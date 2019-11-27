@@ -1,7 +1,9 @@
 package com.unisystems.registry.task;
-
+import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
-import com.unisystems.registry.employee.Employee;
+import com.unisystems.registry.InvalidIdException;
+import com.unisystems.registry.task.search_task_strategy.SearchTaskStrategy;
+import com.unisystems.registry.task.search_task_strategy.SearchTaskStrategyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,45 +14,84 @@ import java.util.List;
 public class TaskService {
 
     @Autowired
-     TaskMapper mapper;
+    TaskRepository taskRepository;
 
     @Autowired
-    TaskRepository repository;
+    TaskMapper mapper;
 
-    public GenericResponse<MultipleTaskResponse> getAllTasks(){
-        Iterable<Task> retrievedTasks = repository.findAll();
+    @Autowired
+    private SearchTaskStrategyFactory factory;
+
+
+    public TaskService(TaskMapper mapper,TaskRepository taskRepository){
+        this.mapper= mapper;
+        this.taskRepository = taskRepository;
+    }
+
+
+    public GenericResponse<MultipleTaskResponse> getAllTasks() {
+        Iterable<Task> retrievedTasks = taskRepository.findAll();
         List<TaskResponse> tasks = new ArrayList<>();
+
         for(Task task : retrievedTasks){
-            tasks.add(mapper.mapTaskResponseFromTask(task));
+            tasks.add(mapper.mapTask(task));
         }
+
         return new GenericResponse<>(new MultipleTaskResponse(tasks));
     }
 
-    public List<TaskResponseById> getTaskWithId(long taskId){
-        Task retrievedTask = repository.findById(taskId).get();
-        List<TaskResponseById> tasks = new ArrayList<>();
-        //List<Employee> employees = new ArrayList<>();
-                tasks.add(mapper.mapTaskResponseFromTaskId(retrievedTask));
+    public GenericResponse<TaskResponseId> getTaskWithId(long id) {
+        try {
+            return new GenericResponse<>(mapper.mapTaskId(taskRepository.findById(id).orElseThrow(()
+                    -> new InvalidIdException("Task", id))));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
+    }
+
+    public GenericResponse<MultipleTaskResponseId> getTaskById(long taskId){
+        try {
+            List<TaskResponseId> tasks = getTaskResponses(taskId);
+            return new GenericResponse<>((new MultipleTaskResponseId(tasks)));
+        } catch (InvalidIdException e){
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
+    }
+
+    private List<TaskResponseId> getTaskResponses(long taskId) throws InvalidIdException {
+        List<TaskResponseId> tasks = new ArrayList<>();
+
+        if (getTaskWithId(taskId).getError() != null) {
+            throw new InvalidIdException("Task", taskId);
+        }
+
+        tasks.add(getTaskWithId(taskId).getData());
+
         return tasks;
     }
 
+    public GenericResponse<MultipleTaskResponseId> getTasksByDifficulty(String difficulty, Long assignedEmployeesNumber){
+        Iterable<Task> retrievedTasks = taskRepository.findAll();
+        if(difficulty == null) {
+            return getTasksByNumberOfEmployees(assignedEmployeesNumber, retrievedTasks);
+        }
+        else{
+            SearchTaskStrategy strategy = factory.makeStrategyForDifficulty(difficulty);
+            try {
+                return new GenericResponse<>(mapper.mapTaskList(strategy.execute(assignedEmployeesNumber, retrievedTasks)));
+            } catch (InvalidIdException e) {
+                return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+            }
+        }
+    }
 
-//    public GenericResponse<TaskResponseById> getTaskWithId(long taskId) {
-//            return new GenericResponse<>(mapper.mapTaskResponseFromTaskiD(repository.findById(taskId).orElseThrow(()
-//                    -> new InvalidIdException("Unit",taskId))));
-//    }
-
-
-//    public List<EmployeeResponse> getEmployeesByCriteriaAndId(String uCriteria, Long id) {
-//        Iterable<Employee> retrievedEmployees = repository.findAll();
-//        List<EmployeeResponse> employees = new ArrayList<>();
-//        switch (uCriteria) {
-//            case "Company":
-//                for (Employee employee : retrievedEmployees) {
-//                    if (employee.getUnit().getDepartment().getBusinessUnit().getCompany().getId() == id) {
-//                        EmployeeResponse employeesToAdd = mapper.mapEmployeeResponseFromEmployee(employee);
-//                        employees.add((employeesToAdd));
-//                    }
-//                }
-//                break;
+    private GenericResponse<MultipleTaskResponseId> getTasksByNumberOfEmployees(Long assignedEmployeesNumber, Iterable<Task> retrievedTasks) {
+        List<TaskResponseId> taskResponseIdList = new ArrayList<>();
+        for (Task task : retrievedTasks) {
+            if(assignedEmployeesNumber == task.getAssignedEmployee().size()){
+                taskResponseIdList.add(mapper.mapTaskId(task));
+            }
+        }
+        return new GenericResponse<>(new MultipleTaskResponseId(taskResponseIdList));
+    }
 }

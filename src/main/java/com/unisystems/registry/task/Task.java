@@ -7,20 +7,19 @@ import java.util.List;
 
 @Entity
 public class Task {
-
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private long id;
 
     private String title;
     private String desc;
-    private int estimationA;
+    private int estimationA; //double or float is better
     private int estimationB;
     private int estimationC;
     private Status status;
+
     @ElementCollection
     private List<String> updates;
-
 
     @ManyToMany
     private List<Employee> assignedEmployee;
@@ -33,14 +32,18 @@ public class Task {
         this.estimationC = estimationC;
         this.status = status;
         this.updates = updates;
-        this.assignedEmployee = assignedEmployee;
     }
 
     public Task() {
     }
 
+    public List<Employee> getAssignedEmployee() {
+        return assignedEmployee;
+    }
 
-
+    public void setAssignedEmployee(List<Employee> assignedEmployee) {
+        this.assignedEmployee = assignedEmployee;
+    }
 
     public long getId() {
         return id;
@@ -104,13 +107,5 @@ public class Task {
 
     public void setUpdates(List<String> updates) {
         this.updates = updates;
-    }
-
-    public List<Employee> getAssignedEmployee() {
-        return assignedEmployee;
-    }
-
-    public void setAssignedEmployee(List<Employee> assignedEmployee) {
-        this.assignedEmployee = assignedEmployee;
     }
 }

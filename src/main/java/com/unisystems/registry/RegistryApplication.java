@@ -22,7 +22,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 public class RegistryApplication implements CommandLineRunner {
@@ -48,6 +47,12 @@ public class RegistryApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 		// ideas for company structure taken from: https://www.unisystems.com/markets
+		Task task = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, Status.NEW,null);
+		Task task2 = new Task("New Website", "Create a website for the product.",5,4,6, Status.NEW,null);
+		Task task3 = new Task("New database", "Integrate sql db.",2,1,1, Status.NEW,null);
+		Task task4 = new Task("New database4", "Integrate sql db4.",2,1,1, Status.NEW,null);
+		Task task5 = new Task("New database5", "Integrate sql db5.",2,1,1, Status.NEW,null);
+
 		Company uniSystems = new Company("UniSystems");
 
 		BusinessUnit financeBU = new BusinessUnit("Finance");
@@ -77,8 +82,6 @@ public class RegistryApplication implements CommandLineRunner {
 		Unit t5gU = new Unit("5G");
 		t5gU.setDept(networkingD);
 
-
-
 		// ideas for employees definitely not taken from: https://www.unisystems.com
 		Employee[] employeeArr = new Employee[10];
 		employeeArr[0] = new Employee("Konstantinos", "Tsiaras", "Kolokotroni 11, Agia Paraskevi", "6980429197", LocalDate.of(2019, 11, 2), null, true, EmployeeContractType.INTERNAL, EmployeePosition.PROGRAMMER);
@@ -107,31 +110,17 @@ public class RegistryApplication implements CommandLineRunner {
 		employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
 		employeeArr[9].setUnit(t5gU);
 
-
-		Task task1 = new Task("protoTask", "diamorfosiEmploy", 3, 2, 4, Status.NEW,null);
-		Task task2 = new Task("deuteroTask", "diamorfosiEmploy", 1, 1, 1, Status.NEW,null );
-
-
-
-		task1.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
-		task2.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[0]));
-
+		task.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
+		task2.setAssignedEmployee(Arrays.asList(employeeArr[2]));
+		task3.setAssignedEmployee(Arrays.asList(employeeArr[0]));
+		task4.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[3],employeeArr[4]));
+		task5.setAssignedEmployee(Arrays.asList(employeeArr[4],employeeArr[5]));
 
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
-
-
-		taskRepository.save(task1);
-		taskRepository.save(task2);
-
-
-
-
-
+		taskRepository.saveAll(Arrays.asList(task,task2,task3,task4,task5));
 	}
-
-
 }

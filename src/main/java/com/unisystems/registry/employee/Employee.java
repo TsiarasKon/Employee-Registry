@@ -31,7 +31,6 @@ public class Employee {
     @ManyToMany
     private List<Task> task;
 
-
     public Employee() {
     }
 
