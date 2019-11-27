@@ -45,5 +45,20 @@ public class UnitsFeature {
 
     }
 
+    @Test
+    public void getUnitById(){
+        try{
+            mockMvc.perform(MockMvcRequestBuilders.get("/Unit/2")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(UnitByIdJson.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 }
