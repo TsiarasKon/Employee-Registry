@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CompanyController {
 
-    @Autowired
     CompanyService service;
 
+    public CompanyController(CompanyService service) {
+        this.service = service;
+    }
 
     @GetMapping("/allCompanies")
     public ResponseEntity getAllCompanies() {

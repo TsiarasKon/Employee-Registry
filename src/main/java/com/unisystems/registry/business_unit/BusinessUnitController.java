@@ -16,8 +16,11 @@ import java.util.Optional;
 public class BusinessUnitController
 {
 
-    @Autowired
     private BusinessUnitService service;
+
+    public BusinessUnitController(BusinessUnitService service) {
+        this.service = service;
+    }
 
     @GetMapping("/BusinessUnits")
     public ResponseEntity getAllBusinessUnits()
@@ -53,7 +56,13 @@ public class BusinessUnitController
     {
         try
         {
-            GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
+            GenericResponse<BusinessUnitResponse> response = service.getBusinessUnitWithId(id);
+            if(response.getError() != null)
+                return new ResponseEntity(
+                        response.getError(),
+                        null,
+                        HttpStatus.BAD_REQUEST
+                );
 
             return new ResponseEntity(
                     response.getData(),
