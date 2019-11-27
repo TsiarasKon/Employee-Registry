@@ -60,13 +60,12 @@ public class DepartmentService {
                 -> new InvalidIdException("Business Unit", deptRequest.getBusinessUnitId()));
         department.setName(deptRequest.getDepartmentName());
         department.setBu(deptBu);
-        department.setId(id);
         return departmentRepository.save(department);
     }
 
     public Department patch(DepartmentRequest deptRequest, long id) throws InvalidIdException {
         Department department = departmentRepository.findById(id).orElseThrow(()
-                -> new InvalidIdException("Department", deptRequest.getBusinessUnitId()));
+                -> new InvalidIdException("Department", id));
         if (deptRequest.getBusinessUnitId() > 0) {
             BusinessUnit deptBu = businessUnitRepository.findById(deptRequest.getBusinessUnitId()).orElseThrow(()
                     -> new InvalidIdException("Business Unit", deptRequest.getBusinessUnitId()));

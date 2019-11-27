@@ -2,13 +2,11 @@ package com.unisystems.registry.business_unit;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -51,24 +49,68 @@ public class BusinessUnitController
     @GetMapping("/business-units/{id}")
     public ResponseEntity getBusinessUnitById(@PathVariable Long id)
     {
-        try
-        {
-            GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
+        return service.getBusinessUnitWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
 
-            return new ResponseEntity(
-                    response.getData(),
-                    null,
-                    HttpStatus.OK
+    @PostMapping("/business-units")
+    public ResponseEntity<Object> postBusinessUnit(@RequestBody BusinessUnitRequest buRequest) {
+        ResponseEntity<Object> errorReturn = buRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.post(buRequest),
+                    HttpStatus.CREATED
             );
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            return new ResponseEntity(
-                    new GenericError(500, "Internal Server Error", "Something went horrible wrong"),
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
                     HttpStatus.BAD_REQUEST
             );
         }
-
     }
+
+    @PutMapping("/business-units/{id}")
+    public ResponseEntity<Object> putBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
+        if (service.getBusinessUnitById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Business Unit with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        ResponseEntity<Object> errorReturn = buRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.put(buRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @PatchMapping("/business-units/{id}")
+    public ResponseEntity<Object> patchBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
+        if (service.getBusinessUnitById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Business Unit with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        try {
+            return new ResponseEntity<>(
+                    service.patch(buRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
 }

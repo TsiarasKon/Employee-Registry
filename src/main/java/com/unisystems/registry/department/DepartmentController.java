@@ -46,10 +46,9 @@ public class DepartmentController {
         return service.getDepartmentWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-
     @PostMapping("/departments")
     public ResponseEntity<Object> postDepartment(@RequestBody DepartmentRequest deptRequest) {
-        ResponseEntity<Object> errorReturn = deptRequest.validateDepartmentRequest();
+        ResponseEntity<Object> errorReturn = deptRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
         try {
             return new ResponseEntity<>(
@@ -65,9 +64,14 @@ public class DepartmentController {
     }
 
     @PutMapping("/departments/{id}")
-    public ResponseEntity<Object> putDepartment(@RequestBody DepartmentRequest deptRequest,
-                                             @PathVariable long id) {
-        ResponseEntity<Object> errorReturn = deptRequest.validateDepartmentRequest();
+    public ResponseEntity<Object> putDepartment(@RequestBody DepartmentRequest deptRequest, @PathVariable long id) {
+        if (service.getDepartmentWithId(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Department with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        ResponseEntity<Object> errorReturn = deptRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
         try {
             return new ResponseEntity<>(
@@ -83,12 +87,11 @@ public class DepartmentController {
     }
 
     @PatchMapping("/departments/{id}")
-    public ResponseEntity<Object> patchDepartment(@RequestBody DepartmentRequest deptRequest,
-                                             @PathVariable long id) {
+    public ResponseEntity<Object> patchDepartment(@RequestBody DepartmentRequest deptRequest, @PathVariable long id) {
         if (service.getDepartmentWithId(id).getError() != null) {
             return new ResponseEntity<>(
                     new GenericError(1, "Invalid id", "Department with id '" + id + "' does not exist"),
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.NOT_FOUND
             );
         }
         try {
