@@ -59,7 +59,7 @@ public class TaskControllerShould {
 
         //Unit test for getAllTasks
         @Test
-        public void returnAllEmployees() {
+        public void returnAllTasks() {
             ResponseEntity<MultipleTaskResponse> actual = controller.getAllTasks();
 
             Assert.assertThat(actual.getBody().getTaskResponse(), CoreMatchers.hasItems(taskResponse1, taskResponse2));
