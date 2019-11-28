@@ -1,5 +1,6 @@
 package com.unisystems.registry.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,25 +10,25 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    DataSource dataSource;
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN")
-                .and()
-                .withUser("companyManager").password(passwordEncoder().encode("123456")).roles("COMPANY_MANAGER")
-                .and()
-                .withUser("businessUnitManager").password(passwordEncoder().encode("123456")).roles("BUSINESS_MANAGER")
-                .and()
-                .withUser("departmentManager").password(passwordEncoder().encode("123456")).roles("DEPARTMENT_MANAGER")
-                .and()
-                .withUser("unitManager").password(passwordEncoder().encode("123456")).roles("UNIT_MANAGER")
-                .and()
-                .withUser("employee").password(passwordEncoder().encode("123456")).roles("EMPLOYEE");
+        auth.
+                jdbcAuthentication().dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery(
+                        "select username,password, enabled from user where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username, authority from authority where username=?");
     }
 
     @Override
@@ -35,11 +36,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
 //                .anyRequest().authenticated
-                .antMatchers("/Companies/**").hasAnyRole("ADMIN","COMPANY_MANAGER")
-                .antMatchers("/BusinessUnits/**").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER")
-                .antMatchers("/Departments/**").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER")
-                .antMatchers("/Units/**").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
-                .antMatchers("/Employees/**").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER","EMPLOYEE")
+                .antMatchers("/Companies/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER')")
+                .antMatchers("/BusinessUnits/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')")
+//                .antMatchers("/Departments/**").access("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER")
+//                .antMatchers("/Units/**").access("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
+//                .antMatchers("/Employees/**").access("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER","EMPLOYEE")
                 .and()
                 .httpBasic();
     }

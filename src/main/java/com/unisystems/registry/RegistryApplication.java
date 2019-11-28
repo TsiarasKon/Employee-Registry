@@ -1,5 +1,7 @@
 package com.unisystems.registry;
 
+import com.unisystems.registry.authority.Authority;
+import com.unisystems.registry.authority.AuthorityRepository;
 import com.unisystems.registry.business_unit.BusinessUnit;
 import com.unisystems.registry.business_unit.BusinessUnitRepository;
 import com.unisystems.registry.company.Company;
@@ -12,6 +14,8 @@ import com.unisystems.registry.employee.EmployeePosition;
 import com.unisystems.registry.employee.EmployeeRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
+import com.unisystems.registry.user.User;
+import com.unisystems.registry.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @SpringBootApplication
 public class RegistryApplication implements CommandLineRunner {
@@ -33,6 +38,10 @@ public class RegistryApplication implements CommandLineRunner {
 	UnitRepository unitRepository;
 	@Autowired
     EmployeeRepository employeeRepository;
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	AuthorityRepository authorityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RegistryApplication.class, args);
@@ -98,10 +107,45 @@ public class RegistryApplication implements CommandLineRunner {
 		employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
 		employeeArr[9].setUnit(t5gU);
 
+		//Define all HashSets
+		HashSet<Authority> admin_auth = new HashSet<Authority>();
+		HashSet<Authority> companyManager_auth = new HashSet<Authority>();
+		HashSet<Authority> businessUnitManager_auth = new HashSet<Authority>();
+		HashSet<Authority> departmentManager_auth = new HashSet<Authority>();
+		HashSet<Authority> unitManager_auth = new HashSet<Authority>();
+		HashSet<Authority> employee_auth = new HashSet<Authority>();
+
+		//Add users and authorities
+		User[] allUsers = new User[6];
+		allUsers[0] = new User("admin","123456",true,admin_auth);
+		allUsers[1] = new User("companyManager","123456",true,companyManager_auth);
+		allUsers[2] = new User("businessUnitManager","123456",true,businessUnitManager_auth);
+		allUsers[3] = new User("departmentManager","123456",true,departmentManager_auth);
+		allUsers[4] = new User("unitManager","123456",true,unitManager_auth);
+		allUsers[5] = new User("employee","123456",true,employee_auth);
+
+		Authority[] allAuthorities = new Authority[6];
+		allAuthorities[0] = new Authority("ROLE_ADMIN",allUsers[0]);
+		admin_auth.add(allAuthorities[0]);
+		allAuthorities[1] = new Authority("ROLE_COMPANY_MANAGER",allUsers[1]);
+		companyManager_auth.add(allAuthorities[1]);
+		allAuthorities[2] = new Authority("ROLE_BUSINESS_MANAGER",allUsers[2]);
+		businessUnitManager_auth.add(allAuthorities[2]);
+		allAuthorities[3] = new Authority("ROLE_DEPARTMENT_MANAGER",allUsers[3]);
+		departmentManager_auth.add(allAuthorities[3]);
+		allAuthorities[4] = new Authority("ROLE_UNIT_MANAGER",allUsers[4]);
+		unitManager_auth.add(allAuthorities[4]);
+		allAuthorities[5] = new Authority("ROLE_EMPLOYEE",allUsers[5]);
+		employee_auth.add(allAuthorities[5]);
+
+
 		companyRepository.save(uniSystems);
 		buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
+		userRepository.saveAll(Arrays.asList(allUsers));
+		authorityRepository.saveAll(Arrays.asList(allAuthorities));
+
 	}
 }
