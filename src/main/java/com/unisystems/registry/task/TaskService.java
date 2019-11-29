@@ -22,12 +22,10 @@ public class TaskService {
     @Autowired
     private SearchTaskStrategyFactory factory;
 
-
     public TaskService(TaskMapper mapper,TaskRepository taskRepository){
         this.mapper= mapper;
         this.taskRepository = taskRepository;
     }
-
 
     public GenericResponse<MultipleTaskResponse> getAllTasks() {
         Iterable<Task> retrievedTasks = taskRepository.findAll();

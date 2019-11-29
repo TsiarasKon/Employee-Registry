@@ -1,7 +1,8 @@
 package com.unisystems.registry.tasks;
 
 public class DifficultyJson {
-    public static String json1 = "{\n" +
+
+    public static String jsonEasy1 = "{\n" +
             "    \"taskResponse\": [\n" +
             "        {\n" +
             "            \"id\": 3,\n" +
@@ -102,7 +103,7 @@ public class DifficultyJson {
             "    ]\n" +
             "}";
 
-    public static String json2 = "{\n" +
+    public static String jsonEasy2 = "{\n" +
             "    \"taskResponse\": [\n" +
             "        {\n" +
             "            \"id\": 3,\n" +
@@ -127,8 +128,75 @@ public class DifficultyJson {
             "        }\n" +
             "    ]\n" +
             "}";
+  
+    public static String jsonMedium = "{\n" +
+            "    \"taskResponse\": [\n" +
+            "        {\n" +
+            "            \"id\": 1,\n" +
+            "            \"title\": \"Android App For New Product\",\n" +
+            "            \"desc\": \"Create an android app for the new product.\",\n" +
+            "            \"difficulty\": \"MEDIUM\",\n" +
+            "            \"status\": \"New\",\n" +
+            "            \"assignedEmployees\": [\n" +
+            "                {\n" +
+            "                    \"id\": 1,\n" +
+            "                    \"recordNumber\": 111500001,\n" +
+            "                    \"fullName\": \"Konstantinos Tsiaras\",\n" +
+            "                    \"telephone\": \"6980429197\",\n" +
+            "                    \"workingPeriod\": \"2019-11-02 - present\",\n" +
+            "                    \"contractType\": \"Company Internal\",\n" +
+            "                    \"position\": \"Programmer\",\n" +
+            "                    \"status\": \"active\",\n" +
+            "                    \"unitName\": \"Core Banking\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"id\": 2,\n" +
+            "                    \"recordNumber\": 111500002,\n" +
+            "                    \"fullName\": \"Scrooge McDuck\",\n" +
+            "                    \"telephone\": \"6931331313\",\n" +
+            "                    \"workingPeriod\": \"2000-02-13 - present\",\n" +
+            "                    \"contractType\": \"Company Internal\",\n" +
+            "                    \"position\": \"Accountant\",\n" +
+            "                    \"status\": \"active\",\n" +
+            "                    \"unitName\": \"Core Banking\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"updates\": []\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
 
-    public static String json3 = "{\n" +
+    public static String jsonMedium2 = jsonMedium;
+
+    public static String jsonHard = "{\n" +
+            "    \"taskResponse\": [\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"title\": \"New Website\",\n" +
+            "            \"desc\": \"Create a website for the product.\",\n" +
+            "            \"difficulty\": \"HARD\",\n" +
+            "            \"status\": \"New\",\n" +
+            "            \"assignedEmployees\": [\n" +
+            "                {\n" +
+            "                    \"id\": 3,\n" +
+            "                    \"recordNumber\": 111500003,\n" +
+            "                    \"fullName\": \"Steve Rogers\",\n" +
+            "                    \"telephone\": \"6912345678\",\n" +
+            "                    \"workingPeriod\": \"2012-06-22 - present\",\n" +
+            "                    \"contractType\": \"External\",\n" +
+            "                    \"position\": \"Scrum Master\",\n" +
+            "                    \"status\": \"active\",\n" +
+            "                    \"unitName\": \"Payment\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"updates\": []\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
+
+    public static String jsonHard2 = jsonHard;
+
+    public static String jsonEmployeeNumber = "{\n" +
             "    \"taskResponse\": [\n" +
             "        {\n" +
             "            \"id\": 2,\n" +

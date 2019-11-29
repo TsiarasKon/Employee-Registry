@@ -2,8 +2,6 @@ package com.unisystems.registry.task;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
-import com.unisystems.registry.InvalidIdException;
-import com.unisystems.registry.StructureUtil;
 import com.unisystems.registry.task.search_task_strategy.difficultyComparison;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +18,10 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+  
     @GetMapping("/tasks")
     public ResponseEntity getAllTasks(){
         GenericResponse<MultipleTaskResponse> taskResponse = taskService.getAllTasks();

@@ -56,28 +56,79 @@ public class TaskFeature {
         }
     }
 
-
     @Test
-    public void getDifficulty() {
+    public void getEasyDifficulty() {
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
-                    .andExpect(content().json(DifficultyJson.json1));
+                    .andExpect(content().json(DifficultyJson.jsonEasy1));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void getDifficultyWithEmployeeNumber() {
+    public void getEasyDifficultyWithEmployeeNumber() {
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
-                    .andExpect(content().json(DifficultyJson.json2));
+                    .andExpect(content().json(DifficultyJson.jsonEasy2));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getMediumDifficulty() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/medium")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.jsonMedium));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getMediumDifficultyWithEmployeeNumber() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/medium/2")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.jsonMedium2));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getHardDifficulty() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/hard")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.jsonHard));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getHardDifficultyWithEmployeeNumber() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/hard/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DifficultyJson.jsonHard2));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +141,7 @@ public class TaskFeature {
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
-                    .andExpect(content().json(DifficultyJson.json3));
+                    .andExpect(content().json(DifficultyJson.jsonEmployeeNumber));
         } catch (Exception e) {
             e.printStackTrace();
         }
