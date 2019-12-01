@@ -1,7 +1,5 @@
 package com.unisystems.registry.unit;
 
-import com.unisystems.registry.department.Department;
-
 public class UnitResponse {
     private  long id;
     private String name;
@@ -10,7 +8,7 @@ public class UnitResponse {
     public UnitResponse(long id, String name,String departmentName) {
         this.id = id;
         this.name = name;
-        this.departmentName=departmentName;
+        this.departmentName = departmentName;
 
     }
 

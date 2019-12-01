@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UnitController {
     private UnitRepository repository;
-    UnitService service;
+
+    @Autowired
+    private UnitService service;
 
     //public UnitController(UnitRepository repository){this.repository=repository;}
 
@@ -23,7 +25,7 @@ public class UnitController {
         this.service = service;
     }
 
-    @GetMapping("/Units")
+    @GetMapping("/units")
     public ResponseEntity getAllUnits(){
         try{
             GenericResponse<MultipleUnitResponse> response=service.getAllUnits();
@@ -50,7 +52,7 @@ public class UnitController {
         }
     }
 
-    @GetMapping("/Unit/{unitId}")
+    @GetMapping("/units/{unitId}")
     public ResponseEntity getUnitById(@PathVariable Long unitId)
     {
 

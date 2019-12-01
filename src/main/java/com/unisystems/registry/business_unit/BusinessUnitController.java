@@ -16,13 +16,14 @@ import java.util.Optional;
 public class BusinessUnitController
 {
 
+    @Autowired
     private BusinessUnitService service;
 
     public BusinessUnitController(BusinessUnitService service) {
         this.service = service;
     }
 
-    @GetMapping("/BusinessUnits")
+    @GetMapping("/business-units")
     public ResponseEntity getAllBusinessUnits()
     {
         try
@@ -51,7 +52,7 @@ public class BusinessUnitController
         }
     }
 
-    @GetMapping("/BusinessUnit/{id}")
+    @GetMapping("/business-units/{id}")
     public ResponseEntity getBusinessUnitById(@PathVariable Long id)
     {
         try

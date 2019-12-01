@@ -2,6 +2,7 @@ package com.unisystems.registry.department;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class DepartmentController {
 
+    @Autowired
     private DepartmentService service;
 
     public DepartmentController(DepartmentService service) {
         this.service = service;
     }
 
-    @GetMapping("/allDepartments")
+    @GetMapping("/departments")
     public ResponseEntity getAllDepartments() {
         try {
             GenericResponse<MultipleDepartmentsResponse> response = service.getAllDepartments();
@@ -45,7 +47,7 @@ public class DepartmentController {
         }
     }
 
-    @GetMapping("/department/{id}")
+    @GetMapping("/departments/{id}")
     public ResponseEntity getDepartmentWithId(@PathVariable long id) {
         return service.getDepartmentWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
