@@ -39,11 +39,11 @@ public class EmployeeMapper {
     }
 
     private String getPosition(Employee employee) {
-        return employee.getEmployeePosition().toString();
+        return (employee.getEmployeePosition() != null) ? employee.getEmployeePosition().toString() : null;
     }
 
     private String getContractType(Employee employee) {
-        return employee.getEmployeeContractType().toString();
+        return (employee.getEmployeeContractType() != null) ? employee.getEmployeeContractType().toString() : null;
     }
 
     private String getWorkingPeriod(Employee employee) {

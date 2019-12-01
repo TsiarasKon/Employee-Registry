@@ -17,6 +17,11 @@ public class Department {
     public Department() {
     }
 
+    public Department(String name, BusinessUnit bu) {
+        this.name = name;
+        this.bu = bu;
+    }
+
     public Department(String name) {
         this.name = name;
     }

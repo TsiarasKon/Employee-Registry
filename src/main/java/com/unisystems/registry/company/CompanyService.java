@@ -40,4 +40,24 @@ public class CompanyService {
             return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
         }
     }
+
+    public Company post(CompanyRequest companyRequest) {
+        return repository.save(new Company(companyRequest.getCompanyName()));
+    }
+
+    public Company put(CompanyRequest companyRequest, long id) throws InvalidIdException {
+        Company company = repository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Company", id));
+        company.setName(companyRequest.getCompanyName());
+        return repository.save(company);
+    }
+
+    public Company patch(CompanyRequest companyRequest, long id) throws InvalidIdException {
+        Company company = repository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Company", id));
+        if (companyRequest.getCompanyName() != null) {
+            company.setName(companyRequest.getCompanyName());
+        }
+        return repository.save(company);
+    }
 }
