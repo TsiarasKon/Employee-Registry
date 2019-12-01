@@ -27,6 +27,11 @@ public class DepartmentService {
     private DepartmentRepository departmentRepository;
 
 
+    public DepartmentService(DepartmentMapper mapper, DepartmentRepository repository) {
+        this.mapper = mapper;
+        this.repository = repository;
+    }
+
     public GenericResponse<MultipleDepartmentsResponse> getAllDepartments() {
         Iterable<Department> retrievedDepartments = departmentRepository.findAll();
         List<DepartmentResponse> departments = new ArrayList<>();

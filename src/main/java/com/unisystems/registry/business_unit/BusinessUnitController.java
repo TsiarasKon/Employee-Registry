@@ -17,6 +17,10 @@ public class BusinessUnitController
     @Autowired
     private BusinessUnitService service;
 
+    public BusinessUnitController(BusinessUnitService service) {
+        this.service = service;
+    }
+
     @GetMapping("/business-units")
     public ResponseEntity getAllBusinessUnits()
     {

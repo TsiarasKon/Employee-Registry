@@ -33,9 +33,7 @@ public class UnitService {
         List<UnitResponse> units = new ArrayList<>();
 
         for (Unit unit : retrievedUnits) {
-            UnitResponse newUnit = mapper.mapUnitResponseFromUnit(unit);
-
-            units.add(newUnit);
+            units.add(mapper.mapUnitResponseFromUnit(unit));
         }
 
         return new GenericResponse<>(new MultipleUnitResponse(units));

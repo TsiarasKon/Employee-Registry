@@ -17,6 +17,10 @@ public class CompanyService {
     @Autowired
     CompanyRepository repository;
 
+    public CompanyService(CompanyMapper mapper, CompanyRepository repository) {
+        this.mapper = mapper;
+        this.repository = repository;
+    }
 
     public GenericResponse<MultipleCompaniesResponse> getAllCompany() {
         Iterable<Company> retrievedCompanies = repository.findAll();

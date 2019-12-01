@@ -12,15 +12,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UnitController {
+    private UnitRepository repository;
 
     @Autowired
-    UnitService service;
+    private UnitService service;
 
+    //public UnitController(UnitRepository repository){this.repository=repository;}
+
+    public UnitController(UnitService service) {
+        this.service = service;
+    }
 
     @GetMapping("/units")
     public ResponseEntity getAllUnits(){
         try{
             GenericResponse<MultipleUnitResponse> response=service.getAllUnits();
+            if(response.getError() != null)
+                return new ResponseEntity(
+                        response.getError(),
+                        null,
+                        HttpStatus.BAD_REQUEST
+                );
+
             return new ResponseEntity(
                     response.getData(),
                     null,
