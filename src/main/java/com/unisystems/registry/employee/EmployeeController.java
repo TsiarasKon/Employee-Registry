@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class EmployeeController {
 
+    public EmployeeController(EmployeeService service){this.service=service;}
+
     @Autowired
     EmployeeService service;
 

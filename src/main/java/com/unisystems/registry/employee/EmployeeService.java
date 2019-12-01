@@ -22,6 +22,13 @@ public class EmployeeService {
     @Autowired
     private SearchEmployeeStrategyFactory factory;
 
+    public EmployeeService( EmployeeMapper mapper,EmployeeRepository employeeRepository) {
+        this.mapper = mapper;
+        this.employeeRepository = employeeRepository;
+
+
+    }
+
     public GenericResponse<MultipleEmployeeResponse> getAllEmployees() {
         Iterable<Employee> retrievedEmployees = employeeRepository.findAll();
         List<EmployeeResponse> employees = new ArrayList<>();

@@ -1,15 +1,11 @@
-package com.unisystems.registry;
+package com.unisystems.registry.unit;
 
-import com.unisystems.registry.business_unit.BusinessUnit;
-import com.unisystems.registry.company.Company;
+
 import com.unisystems.registry.department.Department;
 import com.unisystems.registry.unit.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-
-import java.util.ArrayList;
 
 public class UnitMapperShould {
     private UnitMapper mapper;
@@ -20,15 +16,11 @@ public class UnitMapperShould {
     @Before
     public void setup(){
         mapper=new UnitMapper();
-        Department dept=new Department();
+        Department dept=new Department("Sales Department");
         unitInput=new Unit(134,"unitName",dept);
         unitInput.setId(100);
-        unitInput.setName("ChangedName");
-        unitInput.setDept(new Department());
-
-        departmentInput=new Department();
-        departmentInput.setId(200);
-        unitInput.setDept(departmentInput);
+        unitInput.setName("Different Name");
+        unitInput.setDept(new Department("Other"));
         output=mapper.mapUnitResponseFromUnit(unitInput);
     }
 
@@ -38,12 +30,11 @@ public class UnitMapperShould {
     }
     @Test
     public void keepSameName(){
-        Assert.assertEquals("ChangedName",output.getName());
+        Assert.assertEquals("Different Name",output.getName());
     }
+    @Test
+    public void keepSameDepartment(){Assert.assertEquals(unitInput.getDept().getName(),output.getDepartmentName());}
 
-    /*@Test
-    public void keepSameDept(){
-        Assert.assertEquals("dept_name",output.getDepartmentName());
-    }*/
+
 
 }

@@ -1,4 +1,4 @@
-package com.unisystems.registry;
+package com.unisystems.registry.company;
 
 
 import com.unisystems.registry.company.Company;

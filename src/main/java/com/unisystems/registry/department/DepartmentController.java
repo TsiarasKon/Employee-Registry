@@ -17,6 +17,10 @@ public class DepartmentController {
     @Autowired
     private DepartmentService service;
 
+    public DepartmentController(DepartmentService service) {
+        this.service = service;
+    }
+
     @GetMapping("/departments")
     public ResponseEntity getAllDepartments() {
         try {
@@ -44,7 +48,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments/{id}")
-    public ResponseEntity getCompanyById(@PathVariable long id) {
+    public ResponseEntity getDepartmentWithId(@PathVariable long id) {
         return service.getDepartmentWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
