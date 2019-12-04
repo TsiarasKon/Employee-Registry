@@ -28,13 +28,13 @@ public class TaskController {
         return taskResponse.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/getTaskById/{taskId}")
+    @GetMapping("/tasks/{taskId}")
     public ResponseEntity getTaskById(@PathVariable long taskId){
         GenericResponse<MultipleTaskResponseId> taskById = taskService.getTaskById(taskId);
         return taskById.getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/taskDifficulty/{difficulty}")
+    @GetMapping("/tasks/difficulty/{difficulty}")
     public ResponseEntity getTasksInCriteria(@PathVariable String difficulty) {
         if (! new difficultyComparison().checkIfInStructure(difficulty)) {
             return new ResponseEntity(
@@ -46,12 +46,12 @@ public class TaskController {
         return taskService.getTasksByDifficulty(difficulty, null).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/taskDifficulty/difficulty/{assignedEmployees}")
+    @GetMapping("/tasks/employees-num/{assignedEmployees}")
     public ResponseEntity getTasksByEmployees(@PathVariable Long assignedEmployees) {
         return taskService.getTasksByDifficulty(null, assignedEmployees).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/taskDifficulty/{difficulty}/{assignedEmployees}")
+    @GetMapping("/tasks/difficulty/{difficulty}/employees-num/{assignedEmployees}")
     public ResponseEntity getTasksInCriteria(@PathVariable String difficulty, @PathVariable long assignedEmployees) {
         if (! new difficultyComparison().checkIfInStructure(difficulty)) {
             return new ResponseEntity(

@@ -12,7 +12,7 @@ public class Task {
     private long id;
 
     private String title;
-    private String desc;
+    private String description;
     private int estimationA; //double or float is better
     private int estimationB;
     private int estimationC;
@@ -24,9 +24,9 @@ public class Task {
     @ManyToMany
     private List<Employee> assignedEmployee;
 
-    public Task(String title, String desc, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
+    public Task(String title, String description, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
         this.title = title;
-        this.desc = desc;
+        this.description = description;
         this.estimationA = estimationA;
         this.estimationB = estimationB;
         this.estimationC = estimationC;
@@ -61,12 +61,12 @@ public class Task {
         this.title = title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getEstimationA() {

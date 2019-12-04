@@ -18,7 +18,7 @@ public class TaskMapper {
         return new TaskResponse(
                 task.getId(),
                 task.getTitle(),
-                task.getDesc(),
+                task.getDescription(),
                 getDifficulty(task),
                 getStatus(task)
         );
@@ -28,7 +28,7 @@ public class TaskMapper {
         return new TaskResponseId(
                 task.getId(),
                 task.getTitle(),
-                task.getDesc(),
+                task.getDescription(),
                 getDifficulty(task),
                 getStatus(task),
                 getAssignedEmployees(task),
