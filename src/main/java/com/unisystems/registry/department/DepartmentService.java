@@ -29,7 +29,7 @@ public class DepartmentService {
 
     public DepartmentService(DepartmentMapper mapper, DepartmentRepository repository) {
         this.mapper = mapper;
-        this.repository = repository;
+        this.departmentRepository = repository;
     }
 
     public GenericResponse<MultipleDepartmentsResponse> getAllDepartments() {

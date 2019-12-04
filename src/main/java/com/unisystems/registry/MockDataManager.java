@@ -10,6 +10,9 @@ import com.unisystems.registry.employee.Employee;
 import com.unisystems.registry.employee.EmployeeContractType;
 import com.unisystems.registry.employee.EmployeePosition;
 import com.unisystems.registry.employee.EmployeeRepository;
+import com.unisystems.registry.task.TaskStatus;
+import com.unisystems.registry.task.Task;
+import com.unisystems.registry.task.TaskRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class MockDataManager {
     UnitRepository unitRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    TaskRepository taskRepository;
 
     public void generateAndSaveMockData() {
         // ideas for company structure taken from: https://www.unisystems.com/markets
@@ -91,10 +96,22 @@ public class MockDataManager {
         employeeArr[9] = new Employee("Obi Wan", "Kenobi", "6911111111", LocalDate.of(1973, 4, 4), EmployeeContractType.EXTERNAL, EmployeePosition.SENIOR_ANALYST);
         employeeArr[9].setUnit(t5gU);
 
+        Task task = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, TaskStatus.NEW,null);
+        Task task2 = new Task("New Website", "Create a website for the product.",5,4,6, TaskStatus.NEW,null);
+        Task task3 = new Task("New database", "Integrate sql db.",2,1,1, TaskStatus.NEW,null);
+        Task task4 = new Task("New database4", "Integrate sql db4.",2,1,1, TaskStatus.NEW,null);
+        Task task5 = new Task("New database5", "Integrate sql db5.",2,1,1, TaskStatus.NEW,null);
+        task.setAssignedEmployee(Arrays.asList(employeeArr[0],employeeArr[1]));
+        task2.setAssignedEmployee(Arrays.asList(employeeArr[2]));
+        task3.setAssignedEmployee(Arrays.asList(employeeArr[0]));
+        task4.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[3],employeeArr[4]));
+        task5.setAssignedEmployee(Arrays.asList(employeeArr[4],employeeArr[5]));
+
         companyRepository.save(uniSystems);
         buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
         deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
         unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
         employeeRepository.saveAll(Arrays.asList(employeeArr));
+        taskRepository.saveAll(Arrays.asList(task,task2,task3,task4,task5));
     }
 }
