@@ -1,4 +1,4 @@
-package com.unisystems.registry;
+package com.unisystems.registry.bussinessUnit;
 
 import com.unisystems.registry.business_unit.BusinessUnit;
 import com.unisystems.registry.business_unit.BusinessUnitMapper;

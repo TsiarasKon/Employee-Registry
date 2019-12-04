@@ -3,13 +3,13 @@ package com.unisystems.registry.department;
 public class DepartmentResponse {
 
     private long id;
-    private String Department_Name;
-    private String Business_Unit_Name;
+    private String departmentName;
+    private String businessUnitName;
 
     public DepartmentResponse(long id, String department_Name, String business_Unit_Name) {
         this.id = id;
-        Department_Name = department_Name;
-        Business_Unit_Name = business_Unit_Name;
+        departmentName = department_Name;
+        businessUnitName = business_Unit_Name;
     }
 
     public long getId() {
@@ -20,19 +20,19 @@ public class DepartmentResponse {
         this.id = id;
     }
 
-    public String getDepartment_Name() {
-        return Department_Name;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment_Name(String department_Name) {
-        Department_Name = department_Name;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public String getBusiness_Unit_Name() {
-        return Business_Unit_Name;
+    public String getBusinessUnitName() {
+        return businessUnitName;
     }
 
-    public void setBusiness_Unit_Name(String business_Unit_Name) {
-        Business_Unit_Name = business_Unit_Name;
+    public void setBusinessUnitName(String businessUnitName) {
+        this.businessUnitName = businessUnitName;
     }
 }

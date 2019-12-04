@@ -17,6 +17,11 @@ public class BusinessUnit {
     public BusinessUnit() {
     }
 
+    public BusinessUnit(String name, Company company) {
+        this.name = name;
+        this.company = company;
+    }
+
     public BusinessUnit(String name) {
         this.name = name;
     }

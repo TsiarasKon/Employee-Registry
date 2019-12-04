@@ -17,6 +17,11 @@ public class Unit {
     public Unit() {
     }
 
+    public Unit(String name, Department dept) {
+        this.name = name;
+        this.dept = dept;
+    }
+
     public Unit(long id, String name, Department dept) {
         this.id = id;
         this.name = name;

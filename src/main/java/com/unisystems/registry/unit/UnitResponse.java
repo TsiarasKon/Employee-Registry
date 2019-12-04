@@ -1,16 +1,14 @@
 package com.unisystems.registry.unit;
 
-import com.unisystems.registry.department.Department;
-
 public class UnitResponse {
     private  long id;
     private String name;
-    private Department department;
+    private String departmentName;
 
-    public UnitResponse(long id, String name,Department department) {
+    public UnitResponse(long id, String name,String departmentName) {
         this.id = id;
         this.name = name;
-        this.department=department;
+        this.departmentName = departmentName;
 
     }
 
@@ -30,11 +28,11 @@ public class UnitResponse {
         this.name = name;
     }
 
-    public Department getDepartment() {
-        return department;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

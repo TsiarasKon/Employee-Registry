@@ -3,15 +3,15 @@ package com.unisystems.registry.company;
 public class CompanyResponse {
 
     public long id;
-    public String name;
+    public String companyName;
 
-    public CompanyResponse(long id, String name) {
+    public CompanyResponse(long id, String companyName) {
         this.id = id;
-        this.name = name;
+        this.companyName = companyName;
     }
 
-    public CompanyResponse(String name) {
-        this.name = name;
+    public CompanyResponse(String companyName) {
+        this.companyName = companyName;
     }
 
     public long getId() {
@@ -22,11 +22,11 @@ public class CompanyResponse {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
