@@ -16,7 +16,7 @@ public class Task {
     private int estimationA; //double or float is better
     private int estimationB;
     private int estimationC;
-    private Status status;
+    private TaskStatus taskStatus;
 
     @ElementCollection
     private List<String> updates;
@@ -24,13 +24,13 @@ public class Task {
     @ManyToMany
     private List<Employee> assignedEmployee;
 
-    public Task(String title, String description, int estimationA, int estimationB, int estimationC, Status status, List<String> updates) {
+    public Task(String title, String description, int estimationA, int estimationB, int estimationC, TaskStatus taskStatus, List<String> updates) {
         this.title = title;
         this.description = description;
         this.estimationA = estimationA;
         this.estimationB = estimationB;
         this.estimationC = estimationC;
-        this.status = status;
+        this.taskStatus = taskStatus;
         this.updates = updates;
     }
 
@@ -93,12 +93,12 @@ public class Task {
         this.estimationC = estimationC;
     }
 
-    public Status getStatus() {
-        return status;
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
     }
 
     public List<String> getUpdates() {

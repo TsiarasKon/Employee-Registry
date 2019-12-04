@@ -2,6 +2,8 @@ package com.unisystems.registry.task;
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
 import com.unisystems.registry.InvalidIdException;
+import com.unisystems.registry.employee.Employee;
+import com.unisystems.registry.employee.EmployeeRepository;
 import com.unisystems.registry.task.search_task_strategy.SearchTaskStrategy;
 import com.unisystems.registry.task.search_task_strategy.SearchTaskStrategyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class TaskService {
 
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     TaskMapper mapper;
@@ -91,5 +96,59 @@ public class TaskService {
             }
         }
         return new GenericResponse<>(new MultipleTaskResponseId(taskResponseIdList));
+    }
+
+    public Task post(TaskRequest taskRequest) throws InvalidIdException, InterUnitTaskException {
+        List<Employee> assignedEmployeeList = getValidAssignedEmployeeList(taskRequest.getAssignedEmployeeIds());
+        Task task = new Task(taskRequest.getTitle(), taskRequest.getDesc(),
+                taskRequest.getEstimationA(), taskRequest.getEstimationB(), taskRequest.getEstimationC(),
+                taskRequest.getTaskStatusValid(), taskRequest.getUpdates());
+        task.setAssignedEmployee(assignedEmployeeList);
+        return taskRepository.save(task);
+    }
+
+    public Task put(TaskRequest taskRequest, long id) throws InvalidIdException, InterUnitTaskException {
+        Task task = taskRepository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Task", id));
+        List<Employee> assignedEmployeeList = getValidAssignedEmployeeList(taskRequest.getAssignedEmployeeIds());
+        task.setTitle(taskRequest.getTitle());
+        task.setDescription(taskRequest.getDesc());
+        task.setEstimationA(taskRequest.getEstimationA());
+        task.setEstimationB(taskRequest.getEstimationB());
+        task.setEstimationC(taskRequest.getEstimationC());
+        task.setTaskStatus(taskRequest.getTaskStatusValid());
+        task.setUpdates(taskRequest.getUpdates());
+        task.setAssignedEmployee(assignedEmployeeList);
+        return taskRepository.save(task);
+    }
+
+    public Task patch(TaskRequest taskRequest, long id) throws InvalidIdException, InterUnitTaskException {
+        Task task = taskRepository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Task", id));
+        List<Employee> assignedEmployeeList = getValidAssignedEmployeeList(taskRequest.getAssignedEmployeeIds());
+        if (taskRequest.getTitle() != null) task.setTitle(taskRequest.getTitle());
+        if (taskRequest.getDesc() != null) task.setDescription(taskRequest.getDesc());
+        if (taskRequest.getEstimationA() <= 0) task.setEstimationA(taskRequest.getEstimationA());
+        if (taskRequest.getEstimationB() <= 0) task.setEstimationB(taskRequest.getEstimationB());
+        if (taskRequest.getEstimationC() <= 0) task.setEstimationC(taskRequest.getEstimationC());
+        if (taskRequest.getTaskStatusValid() != null) task.setTaskStatus(taskRequest.getTaskStatusValid());
+        if (taskRequest.getUpdates() != null) task.setUpdates(taskRequest.getUpdates());
+        if (taskRequest.getAssignedEmployeeIds() != null) task.setAssignedEmployee(assignedEmployeeList);
+        return taskRepository.save(task);
+    }
+
+    private List<Employee> getValidAssignedEmployeeList(List<Long> employeeIds) throws InvalidIdException, InterUnitTaskException {
+        List<Employee> assignedEmployeeList = new ArrayList<>();
+        long taskUnitId = -1;
+        Employee currEmployee;
+        for (long employeeId : employeeIds) {
+            currEmployee = employeeRepository.findById(employeeId).orElseThrow(()
+                    -> new InvalidIdException("Employee", employeeId));
+            if (taskUnitId != -1 && currEmployee.getUnit().getId() != taskUnitId)   // if currEmployee belongs to a different unit from previous employee
+                throw new InterUnitTaskException();
+            taskUnitId = currEmployee.getUnit().getId();
+            assignedEmployeeList.add(currEmployee);
+        }
+        return assignedEmployeeList;
     }
 }

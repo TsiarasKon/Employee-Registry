@@ -52,7 +52,7 @@ public class TaskMapper {
     }
 
     private String getStatus(Task task) {
-        return task.getStatus().toString();
+        return task.getTaskStatus().toString();
     }
 
     private String getDifficulty(Task task) {

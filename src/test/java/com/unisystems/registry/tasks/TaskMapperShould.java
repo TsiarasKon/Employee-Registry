@@ -1,6 +1,6 @@
 package com.unisystems.registry.tasks;
 
-import com.unisystems.registry.task.Status;
+import com.unisystems.registry.task.TaskStatus;
 import com.unisystems.registry.task.Task;
 import com.unisystems.registry.task.TaskMapper;
 import com.unisystems.registry.task.TaskResponse;
@@ -17,7 +17,7 @@ public class TaskMapperShould {
     @Before
     public void setUp(){
         mapper = new TaskMapper();
-        taskInput = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, Status.NEW,null);
+        taskInput = new Task("Android App For New Product", "Create an android app for the new product.",3,2,2, TaskStatus.NEW,null);
         taskInput.setId(1);
         expectedOutput = new TaskResponse(1,"Android App For New Product", "Create an android app for the new product.","MEDIUM", "New");
     }

@@ -30,8 +30,8 @@ public class TaskServiceShould {
 
     private Iterable<Task> mockedTasks = new ArrayList<Task>(){
         {
-            add(new Task("Service Test","Testing the TaskService",1,1,2,Status.NEW,null));
-            add(new Task("Service Test","Testing the TaskController",1,2,2,Status.NEW,null));
+            add(new Task("Service Test","Testing the TaskService",1,1,2, TaskStatus.NEW,null));
+            add(new Task("Service Test","Testing the TaskController",1,2,2, TaskStatus.NEW,null));
         }
     };
 

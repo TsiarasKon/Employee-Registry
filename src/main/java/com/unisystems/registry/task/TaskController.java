@@ -2,14 +2,12 @@ package com.unisystems.registry.task;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import com.unisystems.registry.task.search_task_strategy.difficultyComparison;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -61,5 +59,66 @@ public class TaskController {
             );
         }
         return taskService.getTasksByDifficulty(difficulty, assignedEmployees).getResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/tasks")
+    public ResponseEntity<Object> postTask(@RequestBody TaskRequest taskRequest) {
+        ResponseEntity<Object> errorReturn = taskRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    taskService.post(taskRequest),
+                    HttpStatus.CREATED
+            );
+        } catch (InvalidIdException | InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @PutMapping("/tasks/{id}")
+    public ResponseEntity<Object> putTask(@RequestBody TaskRequest taskRequest, @PathVariable long id) {
+        if (taskService.getTaskById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Department with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        ResponseEntity<Object> errorReturn = taskRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    taskService.put(taskRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException | InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @PatchMapping("/tasks/{id}")
+    public ResponseEntity<Object> patchTask(@RequestBody TaskRequest taskRequest, @PathVariable long id) {
+        if (taskService.getTaskById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Department with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        try {
+            return new ResponseEntity<>(
+                    taskService.patch(taskRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException | InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
 }
