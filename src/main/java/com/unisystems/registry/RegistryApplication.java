@@ -14,12 +14,14 @@ import com.unisystems.registry.employee.EmployeePosition;
 import com.unisystems.registry.employee.EmployeeRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
-import com.unisystems.registry.user.User;
-import com.unisystems.registry.user.UserRepository;
+import com.unisystems.registry.user.LoginUser;
+import com.unisystems.registry.user.LoginUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -39,9 +41,13 @@ public class RegistryApplication implements CommandLineRunner {
 	@Autowired
     EmployeeRepository employeeRepository;
 	@Autowired
-	UserRepository userRepository;
+	LoginUserRepository loginUserRepository;
 	@Autowired
 	AuthorityRepository authorityRepository;
+
+	@Autowired
+	PasswordEncoder encoder;
+	//private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	public static void main(String[] args) {
 		SpringApplication.run(RegistryApplication.class, args);
@@ -116,26 +122,28 @@ public class RegistryApplication implements CommandLineRunner {
 		HashSet<Authority> employee_auth = new HashSet<Authority>();
 
 		//Add users and authorities
-		User[] allUsers = new User[6];
-		allUsers[0] = new User("admin","123456",true,admin_auth);
-		allUsers[1] = new User("companyManager","123456",true,companyManager_auth);
-		allUsers[2] = new User("businessUnitManager","123456",true,businessUnitManager_auth);
-		allUsers[3] = new User("departmentManager","123456",true,departmentManager_auth);
-		allUsers[4] = new User("unitManager","123456",true,unitManager_auth);
-		allUsers[5] = new User("employee","123456",true,employee_auth);
+		String common_pass = encoder.encode("123456");
+		LoginUser[] allLoginUsers = new LoginUser[6];
+		allLoginUsers[0] = new LoginUser("admin",common_pass,true,admin_auth);
+		//allLoginUsers[0].setPassword(passwordEncoder.encode(allLoginUsers[0].getPassword()));
+		allLoginUsers[1] = new LoginUser("companyManager",common_pass,true,companyManager_auth);
+		allLoginUsers[2] = new LoginUser("businessUnitManager",common_pass,true,businessUnitManager_auth);
+		allLoginUsers[3] = new LoginUser("departmentManager",common_pass,true,departmentManager_auth);
+		allLoginUsers[4] = new LoginUser("unitManager",common_pass,true,unitManager_auth);
+		allLoginUsers[5] = new LoginUser("employee",common_pass,true,employee_auth);
 
 		Authority[] allAuthorities = new Authority[6];
-		allAuthorities[0] = new Authority("ROLE_ADMIN",allUsers[0]);
+		allAuthorities[0] = new Authority("ADMIN", allLoginUsers[0]);
 		admin_auth.add(allAuthorities[0]);
-		allAuthorities[1] = new Authority("ROLE_COMPANY_MANAGER",allUsers[1]);
+		allAuthorities[1] = new Authority("COMPANY_MANAGER", allLoginUsers[1]);
 		companyManager_auth.add(allAuthorities[1]);
-		allAuthorities[2] = new Authority("ROLE_BUSINESS_MANAGER",allUsers[2]);
+		allAuthorities[2] = new Authority("BUSINESS_MANAGER", allLoginUsers[2]);
 		businessUnitManager_auth.add(allAuthorities[2]);
-		allAuthorities[3] = new Authority("ROLE_DEPARTMENT_MANAGER",allUsers[3]);
+		allAuthorities[3] = new Authority("DEPARTMENT_MANAGER", allLoginUsers[3]);
 		departmentManager_auth.add(allAuthorities[3]);
-		allAuthorities[4] = new Authority("ROLE_UNIT_MANAGER",allUsers[4]);
+		allAuthorities[4] = new Authority("UNIT_MANAGER", allLoginUsers[4]);
 		unitManager_auth.add(allAuthorities[4]);
-		allAuthorities[5] = new Authority("ROLE_EMPLOYEE",allUsers[5]);
+		allAuthorities[5] = new Authority("EMPLOYEE", allLoginUsers[5]);
 		employee_auth.add(allAuthorities[5]);
 
 
@@ -144,7 +152,7 @@ public class RegistryApplication implements CommandLineRunner {
 		deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
 		unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
 		employeeRepository.saveAll(Arrays.asList(employeeArr));
-		userRepository.saveAll(Arrays.asList(allUsers));
+		loginUserRepository.saveAll(Arrays.asList(allLoginUsers));
 		authorityRepository.saveAll(Arrays.asList(allAuthorities));
 
 	}

@@ -5,19 +5,19 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface LoginUserRepository extends CrudRepository<LoginUser, Long> {
 
     @Override
     @RestResource(exported = false)
-    <S extends User> S save(S entity);
+    <S extends LoginUser> S save(S entity);
 
     @Override
     @RestResource(exported = false)
-    <S extends User> Iterable<S> saveAll(Iterable<S> entities);
+    <S extends LoginUser> Iterable<S> saveAll(Iterable<S> entities);
 
     @Override
     @RestResource(exported = false)
-    void delete(User entity);
+    void delete(LoginUser entity);
 
     @Override
     @RestResource(exported = false)
@@ -25,7 +25,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Override
     @RestResource(exported = false)
-    void deleteAll(Iterable<? extends User> entities);
+    void deleteAll(Iterable<? extends LoginUser> entities);
 
     @Override
     @RestResource(exported = false)

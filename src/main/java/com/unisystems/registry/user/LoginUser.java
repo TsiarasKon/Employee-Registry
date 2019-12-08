@@ -7,35 +7,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "login_user")
+public class LoginUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "username")
     private String username;
+
     private String password;
     private boolean enabled;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    //maybe one user has more than one authorities, this is the reason for OneToMany relation
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "loginUser")
     private Set<Authority> authority = new HashSet<>();
 
-    public User() {
+    public LoginUser() {
     }
 
-    public User(String username, String password, boolean enabled, Set<Authority> authority) {
+    public LoginUser(String username, String password, boolean enabled, Set<Authority> authority) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.authority = authority;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

@@ -1,6 +1,6 @@
 package com.unisystems.registry.authority;
 
-import com.unisystems.registry.user.User;
+import com.unisystems.registry.user.LoginUser;
 
 import javax.persistence.*;
 
@@ -11,19 +11,19 @@ public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "authority")
-    private String authority;
+    @Column(name = "role")
+    private String role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username",foreignKey=@ForeignKey(name="ix_auth_username"))
-    private User user;
+    private LoginUser loginUser;
 
     public Authority() {
     }
 
-    public Authority(String authority, User user) {
-        this.authority = authority;
-        this.user = user;
+    public Authority(String role, LoginUser loginUser) {
+        this.role = role;
+        this.loginUser = loginUser;
     }
 
     public long getId() {
@@ -34,19 +34,19 @@ public class Authority {
         this.id = id;
     }
 
-    public String getAuthority() {
-        return authority;
+    public String getRole() {
+        return role;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public User getUser() {
-        return user;
+    public LoginUser getLoginUser() {
+        return loginUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setLoginUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
     }
 }
