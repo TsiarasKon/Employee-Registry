@@ -1,4 +1,4 @@
-package com.unisystems.registry;
+package com.unisystems.registry.employee;
 
 import com.unisystems.registry.employee.*;
 import com.unisystems.registry.unit.Unit;

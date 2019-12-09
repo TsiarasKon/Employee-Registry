@@ -8,17 +8,9 @@ public class UnitMapper {
         return new UnitResponse(
                 unit.getId(),
                 unit.getName(),
-                unit.getDept()
+                unit.getDept().getName()
         );
     }
 
-
-    public UnitResponse mapUnit(Unit unit) {
-        return new UnitResponse(
-                unit.getId(),
-                unit.getName(),
-                unit.getDept()
-        );
-    }
 }
 
