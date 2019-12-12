@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -19,15 +18,16 @@ import java.util.Optional;
 @RestController
 public class BusinessUnitController
 {
+
+    @Autowired
     private BusinessUnitService service;
 
-    public BusinessUnitController(BusinessUnitService service)
-    {
+    public BusinessUnitController(BusinessUnitService service) {
         this.service = service;
     }
 
-    @GetMapping("/BusinessUnits")
-    public ResponseEntity<Object> getAllBusinessUnits()
+    @GetMapping("/business-units")
+    public ResponseEntity getAllBusinessUnits()
     {
         GenericResponse<MultipleBusinessUnitResponse> genericResponse = service.getAllBusinessUnits();
 
@@ -44,76 +44,121 @@ public class BusinessUnitController
                 null,
                 HttpStatus.OK
         );
-     }
-
-    @GetMapping("/BusinessUnits/{id}")
-    public ResponseEntity<Object> getBusinessUnitById(@PathVariable Long id)
-    {
-        GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
-        if(!response.getData().isPresent())
-        {
-            return new ResponseEntity(
-                    new GenericError(new Date(),404, "Not found", "Business Unit with this id: (" + id + ") does not exist"),
-                    null,
-                    HttpStatus.NOT_FOUND
-            );
-        }
-             return new ResponseEntity(
-                    response.getData(),
-                    null,
-                    HttpStatus.OK
-            );
     }
 
-    @PostMapping(value = "/BusinessUnits", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> createBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit)
-    {
-       service.saveChanges(businessUnit);
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(businessUnit.getId())
-                .toUri();
-
-        return ResponseEntity.created(uri).build();
-    }
-
-    @PutMapping("/BusinessUnits/{id}")
-    public ResponseEntity<Object> updateBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit,
-                                                     @PathVariable long id)
-    {
-        GenericResponse<Optional<BusinessUnit>> updateResponse = service.getBusinessUnitById(id);
-        if(!updateResponse.getData().isPresent())
-            return ResponseEntity.notFound().build();
-
-        businessUnit.setId(id);
-
-        service.saveChanges(businessUnit);
-
-        return ResponseEntity.noContent().build();
-    }
-
-
-/*    @GetMapping("/BusinessUnit/{id}")
+    @GetMapping("/business-units/{id}")
     public ResponseEntity getBusinessUnitById(@PathVariable Long id)
     {
-        try
-        {
-            BusinessUnitResponse response = service.getBusinessUnitById(id);
-            return new ResponseEntity(
-                    response,
-                    null,
-                    HttpStatus.OK
+        return service.getBusinessUnitWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
+//    @GetMapping("/BusinessUnits/{id}")
+//    public ResponseEntity<Object> getBusinessUnitById(@PathVariable Long id)
+//    {
+//        GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
+//        if(!response.getData().isPresent())
+//        {
+//            return new ResponseEntity(
+//                    new GenericError(new Date(),404, "Not found", "Business Unit with this id: (" + id + ") does not exist"),
+//                    null,
+//                    HttpStatus.NOT_FOUND
+//            );
+//        }
+//        return new ResponseEntity(
+//                response.getData(),
+//                null,
+//                HttpStatus.OK
+//        );
+//    }
+//
+//    @PostMapping(value = "/BusinessUnits", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<Object> createBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit)
+//    {
+//        service.saveChanges(businessUnit);
+//
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(businessUnit.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(uri).build();
+//    }
+//
+//    @PutMapping("/BusinessUnits/{id}")
+//    public ResponseEntity<Object> updateBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit,
+//                                                     @PathVariable long id)
+//    {
+//        GenericResponse<Optional<BusinessUnit>> updateResponse = service.getBusinessUnitById(id);
+//        if(!updateResponse.getData().isPresent())
+//            return ResponseEntity.notFound().build();
+//
+//        businessUnit.setId(id);
+//
+//        service.saveChanges(businessUnit);
+//
+//        return ResponseEntity.noContent().build();
+//    }
+
+    @PostMapping("/business-units")
+    public ResponseEntity<Object> postBusinessUnit(@RequestBody BusinessUnitRequest buRequest) {
+        ResponseEntity<Object> errorReturn = buRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.post(buRequest),
+                    HttpStatus.CREATED
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
             );
         }
-        catch(InvalidIdException ex)
-        {
-            return new ResponseEntity(
-                    new GenericError(404, "Not found", ex.getMessage()),
-                    null,
+    }
+
+    @PutMapping("/business-units/{id}")
+    public ResponseEntity<Object> putBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
+        if (service.getBusinessUnitById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Business Unit with id '" + id + "' does not exist"),
                     HttpStatus.NOT_FOUND
             );
         }
-    }*/
+        ResponseEntity<Object> errorReturn = buRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.put(buRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @PatchMapping("/business-units/{id}")
+    public ResponseEntity<Object> patchBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
+        if (service.getBusinessUnitById(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Business Unit with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        try {
+            return new ResponseEntity<>(
+                    service.patch(buRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
 }

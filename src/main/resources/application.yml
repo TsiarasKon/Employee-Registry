@@ -1,0 +1,4 @@
+spring:
+  datasource:
+#    url: ${JDBC_DATABASE_URL}
+    url: "jdbc:postgresql://ec2-54-247-72-30.eu-west-1.compute.amazonaws.com:5432/d26enoqnpofp78?user=mfuowgozqetkjb&password=d07e5a9782add6b203b28c3b173995851aca3d4fab7e51fb526f16a4dc8b9f29&sslmode=require"

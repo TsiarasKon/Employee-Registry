@@ -2,32 +2,38 @@ package com.unisystems.registry.unit;
 
 import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
-import com.unisystems.registry.business_unit.BusinessUnit;
+
+import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UnitController {
-    private final   UnitRepository repository;
-
-    UnitController(UnitRepository repository){this.repository=repository;}
+    private UnitRepository repository;
 
     @Autowired
-    UnitService service;
+    private UnitService service;
 
+    //public UnitController(UnitRepository repository){this.repository=repository;}
 
-    @GetMapping("/Units")
+    public UnitController(UnitService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/units")
     public ResponseEntity getAllUnits(){
         try{
             GenericResponse<MultipleUnitResponse> response=service.getAllUnits();
+            if(response.getError() != null)
+                return new ResponseEntity(
+                        response.getError(),
+                        null,
+                        HttpStatus.BAD_REQUEST
+                );
+
             return new ResponseEntity(
                     response.getData(),
                     null,
@@ -44,41 +50,72 @@ public class UnitController {
         }
     }
 
-    @GetMapping("/Unit/{unitId}")
+    @GetMapping("/units/{unitId}")
     public ResponseEntity getUnitById(@PathVariable Long unitId)
     {
-        try
-        {
-            GenericResponse<Optional<Unit>> response = service.getUnitsByUnitId(unitId);
 
-            return new ResponseEntity(
-                    response.getData(),
-                    null,
+            return service.getUnitWithId(unitId).getResponseEntity(null,HttpStatus.BAD_REQUEST);
+
+    }
+
+    @PostMapping("/units")
+    public ResponseEntity<Object> postUnit(@RequestBody UnitRequest unitRequest) {
+        ResponseEntity<Object> errorReturn = unitRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.post(unitRequest),
+                    HttpStatus.CREATED
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @PutMapping("/units/{id}")
+    public ResponseEntity<Object> putUnit(@RequestBody UnitRequest unitRequest, @PathVariable long id) {
+        if (service.getUnitWithId(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Unit with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        ResponseEntity<Object> errorReturn = unitRequest.validateRequest();
+        if (errorReturn != null) return errorReturn;
+        try {
+            return new ResponseEntity<>(
+                    service.put(unitRequest, id),
                     HttpStatus.OK
             );
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            return new ResponseEntity(
-                    new GenericError(500, "Internal Server Error", "Something went horribly wrong"),
-                    HttpStatus.INTERNAL_SERVER_ERROR
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
             );
         }
-
     }
 
-    @GetMapping("/unit/{unitId}")
-    public Unit findUnitById(@PathVariable Long unitId) {
-
-        return repository.findById(unitId)
-                .orElseThrow(() -> new UnitNotFoundException(unitId));
-
-
-
+    @PatchMapping("/units/{id}")
+    public ResponseEntity<Object> patchUnit(@RequestBody UnitRequest unitRequest, @PathVariable long id) {
+        if (service.getUnitWithId(id).getError() != null) {
+            return new ResponseEntity<>(
+                    new GenericError(1, "Invalid id", "Unit with id '" + id + "' does not exist"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        try {
+            return new ResponseEntity<>(
+                    service.patch(unitRequest, id),
+                    HttpStatus.OK
+            );
+        } catch (InvalidIdException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
-
-
-
-
 }

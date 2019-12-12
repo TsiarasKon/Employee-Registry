@@ -1,36 +1,18 @@
 package com.unisystems.registry;
 
-import java.time.LocalDate;
 import java.util.Date;
 
-public class GenericError
-{
-    private Date timeStamp;
+public class GenericError {
     private int code;
     private String title;
     private String desc;
-
-    public GenericError(Date timeStamp,int code , String title, String desc)
-    {
-        this.timeStamp = timeStamp;
-        this.code = code;
-        this.title = title;
-        this.desc = desc;
-    }
+    private Date timestamp;
 
     public GenericError(int code, String title, String desc) {
         this.code = code;
         this.title = title;
         this.desc = desc;
-    }
-
-
-    public Date getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+        this.timestamp = new Date();
     }
 
     public int getCode() {
@@ -55,5 +37,13 @@ public class GenericError
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

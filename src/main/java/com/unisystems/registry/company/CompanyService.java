@@ -1,6 +1,8 @@
 package com.unisystems.registry.company;
 
+import com.unisystems.registry.GenericError;
 import com.unisystems.registry.GenericResponse;
+import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,47 @@ public class CompanyService {
     @Autowired
     CompanyRepository repository;
 
+    public CompanyService(CompanyMapper mapper, CompanyRepository repository) {
+        this.mapper = mapper;
+        this.repository = repository;
+    }
 
     public GenericResponse<MultipleCompaniesResponse> getAllCompany() {
-        Iterable<Company> retrivedCompanies = repository.findAll();
+        Iterable<Company> retrievedCompanies = repository.findAll();
         List<CompanyResponse> companies = new ArrayList<>();
 
-        for (Company company : retrivedCompanies){
+        for (Company company : retrievedCompanies){
             companies.add(mapper.mapCompanyResponseFromCompany(company));
         }
         return new GenericResponse<>(new MultipleCompaniesResponse(companies));
+    }
+
+    public GenericResponse<CompanyResponse> getCompanyWithId(long id) {
+        try {
+            return new GenericResponse<>(mapper.mapCompanyResponseFromCompany( repository.findById(id).orElseThrow(()
+                    -> new InvalidIdException("Company", id))));
+        } catch (InvalidIdException e) {
+            return new GenericResponse<>(new GenericError(1, "Invalid id", e.getMessage()));
+        }
+    }
+
+    public Company post(CompanyRequest companyRequest) {
+        return repository.save(new Company(companyRequest.getCompanyName()));
+    }
+
+    public Company put(CompanyRequest companyRequest, long id) throws InvalidIdException {
+        Company company = repository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Company", id));
+        company.setName(companyRequest.getCompanyName());
+        return repository.save(company);
+    }
+
+    public Company patch(CompanyRequest companyRequest, long id) throws InvalidIdException {
+        Company company = repository.findById(id).orElseThrow(()
+                -> new InvalidIdException("Company", id));
+        if (companyRequest.getCompanyName() != null) {
+            company.setName(companyRequest.getCompanyName());
+        }
+        return repository.save(company);
     }
 }
