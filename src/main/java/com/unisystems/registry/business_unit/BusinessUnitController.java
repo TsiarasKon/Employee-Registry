@@ -24,30 +24,18 @@ public class BusinessUnitController
     @GetMapping("/business-units")
     public ResponseEntity getAllBusinessUnits()
     {
-        try
-        {
-            GenericResponse<MultipleBusinessUnitResponse> genericResponse = service.getAllBusinessUnits();
-            if(genericResponse.getError() != null)
-                return new ResponseEntity(
-                  genericResponse.getError(),
-                  null,
-                  HttpStatus.BAD_REQUEST
-                );
+        GenericResponse<MultipleBusinessUnitResponse> genericResponse = service.getAllBusinessUnits();
+        if(genericResponse.getError() != null)
             return new ResponseEntity(
-                    genericResponse.getData(),
-                    null,
-                    HttpStatus.OK
-            );
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            return new ResponseEntity(
-              new GenericError(500, "Internal Server Error", "Something went horrible wrong"),
+              genericResponse.getError(),
               null,
-              HttpStatus.INTERNAL_SERVER_ERROR
+              HttpStatus.BAD_REQUEST
             );
-        }
+        return new ResponseEntity(
+                genericResponse.getData(),
+                null,
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/business-units/{id}")
@@ -67,7 +55,7 @@ public class BusinessUnitController
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -90,7 +78,7 @@ public class BusinessUnitController
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -111,7 +99,7 @@ public class BusinessUnitController
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }

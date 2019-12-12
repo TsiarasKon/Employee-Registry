@@ -70,9 +70,14 @@ public class TaskController {
                     taskService.post(taskRequest),
                     HttpStatus.CREATED
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -93,9 +98,14 @@ public class TaskController {
                     taskService.put(taskRequest, id),
                     HttpStatus.OK
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -114,9 +124,14 @@ public class TaskController {
                     taskService.patch(taskRequest, id),
                     HttpStatus.OK
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }

@@ -61,7 +61,7 @@ public class DepartmentController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -84,7 +84,7 @@ public class DepartmentController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -105,7 +105,7 @@ public class DepartmentController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
