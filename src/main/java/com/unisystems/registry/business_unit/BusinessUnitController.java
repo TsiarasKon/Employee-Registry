@@ -8,6 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -24,30 +29,21 @@ public class BusinessUnitController
     @GetMapping("/business-units")
     public ResponseEntity getAllBusinessUnits()
     {
-        try
+        GenericResponse<MultipleBusinessUnitResponse> genericResponse = service.getAllBusinessUnits();
+
+        if(genericResponse.getError() != null)
         {
-            GenericResponse<MultipleBusinessUnitResponse> genericResponse = service.getAllBusinessUnits();
-            if(genericResponse.getError() != null)
-                return new ResponseEntity(
-                  genericResponse.getError(),
-                  null,
-                  HttpStatus.BAD_REQUEST
-                );
-            return new ResponseEntity(
-                    genericResponse.getData(),
+            return new ResponseEntity<>(
+                    genericResponse.getError(),
                     null,
-                    HttpStatus.OK
+                    HttpStatus.BAD_REQUEST
             );
         }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            return new ResponseEntity(
-              new GenericError(500, "Internal Server Error", "Something went horrible wrong"),
-              null,
-              HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
+        return new ResponseEntity<>(
+                genericResponse.getData(),
+                null,
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/business-units/{id}")
@@ -55,6 +51,54 @@ public class BusinessUnitController
     {
         return service.getBusinessUnitWithId(id).getResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
+
+//    @GetMapping("/BusinessUnits/{id}")
+//    public ResponseEntity<Object> getBusinessUnitById(@PathVariable Long id)
+//    {
+//        GenericResponse<Optional<BusinessUnit>> response = service.getBusinessUnitById(id);
+//        if(!response.getData().isPresent())
+//        {
+//            return new ResponseEntity(
+//                    new GenericError(new Date(),404, "Not found", "Business Unit with this id: (" + id + ") does not exist"),
+//                    null,
+//                    HttpStatus.NOT_FOUND
+//            );
+//        }
+//        return new ResponseEntity(
+//                response.getData(),
+//                null,
+//                HttpStatus.OK
+//        );
+//    }
+//
+//    @PostMapping(value = "/BusinessUnits", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<Object> createBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit)
+//    {
+//        service.saveChanges(businessUnit);
+//
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(businessUnit.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(uri).build();
+//    }
+//
+//    @PutMapping("/BusinessUnits/{id}")
+//    public ResponseEntity<Object> updateBusinessUnit(@Valid @RequestBody BusinessUnit businessUnit,
+//                                                     @PathVariable long id)
+//    {
+//        GenericResponse<Optional<BusinessUnit>> updateResponse = service.getBusinessUnitById(id);
+//        if(!updateResponse.getData().isPresent())
+//            return ResponseEntity.notFound().build();
+//
+//        businessUnit.setId(id);
+//
+//        service.saveChanges(businessUnit);
+//
+//        return ResponseEntity.noContent().build();
+//    }
 
     @PostMapping("/business-units")
     public ResponseEntity<Object> postBusinessUnit(@RequestBody BusinessUnitRequest buRequest) {

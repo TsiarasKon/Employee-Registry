@@ -36,13 +36,18 @@ public class BusinessUnitService
         {
             businessUnits.add(mapper.mapBusinessUnitResponseFromBusinessUnit(businessUnit));
         }
+
         return new GenericResponse<>(new MultipleBusinessUnitResponse(businessUnits));
     }
 
     public GenericResponse<Optional<BusinessUnit>> getBusinessUnitById(Long id)
     {
         return new GenericResponse<>(buRepository.findById(id));
+    }
 
+    public void saveChanges(BusinessUnit businessUnit)
+    {
+        buRepository.save(businessUnit);
     }
 
     public GenericResponse<BusinessUnitResponse> getBusinessUnitWithId(long id) {
