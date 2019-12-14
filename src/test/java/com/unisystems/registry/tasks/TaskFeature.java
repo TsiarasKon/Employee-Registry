@@ -61,7 +61,7 @@ public class TaskFeature {
     @Test
     public void getEasyDifficulty() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/task/difficulty/easy")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/easy")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -74,7 +74,7 @@ public class TaskFeature {
     @Test
     public void getEasyDifficultyWithEmployeeNumber() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/easy/employees-num/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class TaskFeature {
     @Test
     public void getMediumDifficulty() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/medium")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/medium")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class TaskFeature {
     @Test
     public void getMediumDifficultyWithEmployeeNumber() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/medium/2")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/medium/employees-num/2")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -113,7 +113,7 @@ public class TaskFeature {
     @Test
     public void getHardDifficulty() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/hard")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/hard")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -126,7 +126,7 @@ public class TaskFeature {
     @Test
     public void getHardDifficultyWithEmployeeNumber() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/hard/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/difficulty/hard/employees-num/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -139,7 +139,7 @@ public class TaskFeature {
     @Test
     public void getDifficultyByEmployeeNumber() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/difficulty/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/employees-num/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
