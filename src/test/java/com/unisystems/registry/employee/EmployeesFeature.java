@@ -35,7 +35,7 @@ public class EmployeesFeature {
     @Test
     public void getAllEmployees() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/allEmployees")
+            mockMvc.perform(MockMvcRequestBuilders.get("/employees")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -64,7 +64,7 @@ public class EmployeesFeature {
     @Test
     public void getEmployeesByCriteria(){
         try{
-            mockMvc.perform(MockMvcRequestBuilders.get("/employeesIn/Unit/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/employees-in/Unit/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())

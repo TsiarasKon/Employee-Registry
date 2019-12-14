@@ -6,8 +6,8 @@ public class AllEmployeesJson {
             "        {\n" +
             "            \"id\": 1,\n" +
             "            \"recordNumber\": 111500001,\n" +
-            "            \"fullName\": \"Konstantinos Tsiaras\",\n" +
-            "            \"telephone\": \"6980429197\",\n" +
+            "            \"fullName\": \"Elon Musk\",\n" +
+            "            \"telephone\": \"6980421234\",\n" +
             "            \"workingPeriod\": \"2019-11-02 - present\",\n" +
             "            \"contractType\": \"Company Internal\",\n" +
             "            \"position\": \"Programmer\",\n" +

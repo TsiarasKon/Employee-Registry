@@ -1,6 +1,7 @@
 package com.unisystems.registry.tasks;
 
 import com.unisystems.registry.RegistryApplication;
+import com.unisystems.registry.employee.AllEmployeesJson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,12 +42,13 @@ public class TaskFeature {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @Test
     public void getTasksById() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/getTaskById/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -59,7 +61,7 @@ public class TaskFeature {
     @Test
     public void getEasyDifficulty() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/taskDifficulty/easy")
+            mockMvc.perform(MockMvcRequestBuilders.get("/task/difficulty/easy")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())

@@ -72,7 +72,7 @@ public class DepartmentControllerShould {
     @Test
     public void returnDepartmentWithGivenId() {
         ResponseEntity<DepartmentResponse> actual = controller.getDepartmentWithId(departmentResponse1.getId());
-        Assert.assertThat(actual.getBody().getDepartment_Name(), CoreMatchers.sameInstance(departmentResponse1.getDepartment_Name()));
+        Assert.assertThat(actual.getBody().getDepartmentName(), CoreMatchers.sameInstance(departmentResponse1.getDepartmentName()));
         Assert.assertEquals(HttpStatus.OK, actual.getStatusCode());
     }
 

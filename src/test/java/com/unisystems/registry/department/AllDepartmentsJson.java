@@ -5,18 +5,18 @@ public class AllDepartmentsJson {
             "    \"departmentResponse\": [\n" +
             "        {\n" +
             "            \"id\": 1,\n" +
-            "            \"business_Unit_Name\": \"Finance\",\n" +
-            "            \"department_Name\": \"Banking\"\n" +
+            "            \"departmentName\": \"Banking\",\n" +
+            "            \"businessUnitName\": \"Finance\"\n" +
             "        },\n" +
             "        {\n" +
             "            \"id\": 2,\n" +
-            "            \"business_Unit_Name\": \"Telecommunications\",\n" +
-            "            \"department_Name\": \"Infrastructure\"\n" +
+            "            \"departmentName\": \"Infrastructure\",\n" +
+            "            \"businessUnitName\": \"Telecommunications\"\n" +
             "        },\n" +
             "        {\n" +
             "            \"id\": 3,\n" +
-            "            \"business_Unit_Name\": \"Telecommunications\",\n" +
-            "            \"department_Name\": \"Networking\"\n" +
+            "            \"departmentName\": \"Networking\",\n" +
+            "            \"businessUnitName\": \"Telecommunications\"\n" +
             "        }\n" +
             "    ]\n" +
             "}";

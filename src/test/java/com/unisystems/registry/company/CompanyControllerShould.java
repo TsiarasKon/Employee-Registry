@@ -76,7 +76,7 @@ public class CompanyControllerShould {
     @Test
     public void returnCompanyWithGivenId() {
         ResponseEntity<CompanyResponse> actual = controller.getCompanyById(companyResponse1.getId());
-        Assert.assertThat(actual.getBody().getName(), CoreMatchers.sameInstance(companyResponse1.getName()));
+        Assert.assertThat(actual.getBody().getCompanyName(), CoreMatchers.sameInstance(companyResponse1.getCompanyName()));
         Assert.assertEquals(HttpStatus.OK, actual.getStatusCode());
     }
 

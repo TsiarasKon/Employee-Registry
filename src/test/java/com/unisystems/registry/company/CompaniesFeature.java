@@ -33,7 +33,7 @@ public class CompaniesFeature {
     @Test
     public void getAllCompanies() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/allCompanies")
+            mockMvc.perform(MockMvcRequestBuilders.get("/companies")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -47,7 +47,7 @@ public class CompaniesFeature {
     @Test
     public void getCompanyById() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/Company/1")
+            mockMvc.perform(MockMvcRequestBuilders.get("/companies/1")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())

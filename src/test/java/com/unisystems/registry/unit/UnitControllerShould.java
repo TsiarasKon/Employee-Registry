@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,8 @@ public class UnitControllerShould {
 
     @Mock
     UnitResponse unitResponse2;
+    //@Mock
+    //Unit mockUnit;
 
 
     @Before
@@ -97,4 +100,14 @@ public class UnitControllerShould {
         return error;
     }
 
-}
+    //PostUnitId
+    //@Test
+    //public void createUnit() throws Exception {
+      //  Unit mockUnit=new Unit("6G");
+        //Mockito.when(service.put(Mockito.anyString(),Mockito.any(Unit.class))).thenReturn(mockUnit);
+        //Mockito.when(service.post(Mockito.,Mockito.any(mockUnit.getClass()))).thenReturn(mockUnit);
+        //ResponseEntity<Object> actual = controller.putEmployee(request);
+        //Assert.assertEquals(HttpStatus.CREATED,actual.getStatusCode());
+    //}
+
+    }

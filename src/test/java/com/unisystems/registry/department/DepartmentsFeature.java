@@ -1,6 +1,7 @@
 package com.unisystems.registry.department;
 
 import com.unisystems.registry.RegistryApplication;
+import com.unisystems.registry.company.CompanyByIdJSon;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,11 +33,25 @@ public class DepartmentsFeature {
     @Test
     public void getAllDepartments() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/allDepartments")
+            mockMvc.perform(MockMvcRequestBuilders.get("/departments")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
                     .andExpect(content().json(AllDepartmentsJson.json));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void getDepartmentById() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.get("/departments/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(DepartmentByIdJson.json));
         } catch (Exception e) {
             e.printStackTrace();
         }

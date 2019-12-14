@@ -5,7 +5,7 @@ public class AllCompaniesJson {
             "    \"companyResponses\": [\n" +
             "        {\n" +
             "            \"id\": 1,\n" +
-            "            \"name\": \"UniSystems\"\n" +
+            "            \"companyName\": \"UniSystems\"\n" +
             "        }\n" +
             "    ]\n" +
             "}";

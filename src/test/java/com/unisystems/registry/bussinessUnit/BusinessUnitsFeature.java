@@ -35,7 +35,7 @@ public class BusinessUnitsFeature {
     @Test
     public void getAllBusinessUnits() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/BusinessUnits")
+            mockMvc.perform(MockMvcRequestBuilders.get("/business-units")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
@@ -49,7 +49,7 @@ public class BusinessUnitsFeature {
     @Test
     public void getAllBusinessUnitById() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/BusinessUnit/2")
+            mockMvc.perform(MockMvcRequestBuilders.get("/business-units/2")
                     .contentType(MediaType.APPLICATION_JSON)
             )
                     .andExpect(status().isOk())
