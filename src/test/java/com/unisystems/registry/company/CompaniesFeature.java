@@ -1,7 +1,7 @@
 package com.unisystems.registry.company;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisystems.registry.RegistryApplication;
-import com.unisystems.registry.department.AllDepartmentsJson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,5 +56,63 @@ public class CompaniesFeature {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void postCompany()
+    {
+        try {
+            CompanyRequest request=new CompanyRequest();
+            request.setCompanyName("Company");
+            mockMvc.perform(MockMvcRequestBuilders.post("/companies")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isCreated());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void updateCompany(){
+        try {
+            CompanyRequest request=new CompanyRequest();
+            request.setCompanyName("Company");
+            mockMvc.perform(MockMvcRequestBuilders.put("/companies/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void checkPatchBusinessUnit(){
+        try {
+            CompanyRequest request=new CompanyRequest();
+            request.setCompanyName("Company");
+            mockMvc.perform(MockMvcRequestBuilders.patch("/companies/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

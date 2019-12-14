@@ -12,7 +12,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,8 @@ public class BusinessUnitControllerShould {
 
     @Mock
     BusinessUnitResponse businessUnitResponse2;
+    @Mock
+    BusinessUnitRequest request;
 
 
     @Before
@@ -94,5 +98,13 @@ public class BusinessUnitControllerShould {
         controller = new BusinessUnitController(service);
         return error;
     }
+
+    @Test
+    public void postsNewBusinessUnit(){
+        ResponseEntity<Object> actual=controller.postBusinessUnit(request);
+        Assert.assertThat(actual.getBody(), CoreMatchers.sameInstance(request.getBusinessUnitName()));
+        Assert.assertEquals(HttpStatus.CREATED, actual.getStatusCode());
+    }
+
 
 }

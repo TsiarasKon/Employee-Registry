@@ -1,7 +1,8 @@
 package com.unisystems.registry.tasks;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisystems.registry.RegistryApplication;
-import com.unisystems.registry.employee.AllEmployeesJson;
+import com.unisystems.registry.task.TaskRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,6 +145,67 @@ public class TaskFeature {
             )
                     .andExpect(status().isOk())
                     .andExpect(content().json(DifficultyJson.jsonEmployeeNumber));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void postTask()
+    {
+        try {
+            TaskRequest request=new TaskRequest();
+            request.setDesc("Short Description");
+            request.setEstimationA(2);
+            mockMvc.perform(MockMvcRequestBuilders.post("/tasks")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isCreated());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void updateTask(){
+        try {
+            TaskRequest request=new TaskRequest();
+            request.setDesc("Short Description");
+            request.setEstimationA(2);
+            mockMvc.perform(MockMvcRequestBuilders.put("/tasks/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void checkPatchTask(){
+        try {
+            TaskRequest request=new TaskRequest();
+            request.setDesc("Short Description");
+            request.setEstimationA(2);
+            mockMvc.perform(MockMvcRequestBuilders.patch("/tasks/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

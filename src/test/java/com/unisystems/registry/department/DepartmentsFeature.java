@@ -1,7 +1,7 @@
 package com.unisystems.registry.department;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisystems.registry.RegistryApplication;
-import com.unisystems.registry.company.CompanyByIdJSon;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +56,64 @@ public class DepartmentsFeature {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void postDepartment()
+    {
+        try {
+            DepartmentRequest request=new DepartmentRequest();
+            request.setDepartmentName("Department");
+            mockMvc.perform(MockMvcRequestBuilders.post("/departments")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isCreated());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void updateDepartment(){
+        try {
+            DepartmentRequest request=new DepartmentRequest();
+            request.setDepartmentName("Department");
+            mockMvc.perform(MockMvcRequestBuilders.put("/departments/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void checkPatchDepartment(){
+        try {
+            DepartmentRequest request=new DepartmentRequest();
+            request.setDepartmentName("Department");
+            mockMvc.perform(MockMvcRequestBuilders.patch("/departments/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

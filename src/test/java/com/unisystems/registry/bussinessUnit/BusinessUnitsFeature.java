@@ -1,6 +1,8 @@
 package com.unisystems.registry.bussinessUnit;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisystems.registry.RegistryApplication;
+import com.unisystems.registry.business_unit.BusinessUnitRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,5 +60,66 @@ public class BusinessUnitsFeature {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void postBusinessUnit()
+    {
+        try {
+            BusinessUnitRequest request=new BusinessUnitRequest();
+            request.setBusinessUnitName("BusinessUnit");
+            request.setCompanyId(1);
+            mockMvc.perform(MockMvcRequestBuilders.post("/business-units")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isCreated());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void updateBusinessUnit(){
+        try {
+            BusinessUnitRequest request=new BusinessUnitRequest();
+            request.setBusinessUnitName("BusinessUnit");
+            request.setCompanyId(1);
+            mockMvc.perform(MockMvcRequestBuilders.put("/business-units/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void checkPatchBusinessUnit(){
+        try {
+            BusinessUnitRequest request=new BusinessUnitRequest();
+            request.setBusinessUnitName("BusinessUnit");
+            request.setCompanyId(1);
+            mockMvc.perform(MockMvcRequestBuilders.patch("/business-units/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,8 +1,7 @@
 package com.unisystems.registry.employee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisystems.registry.RegistryApplication;
-import com.unisystems.registry.unit.AllUnitsJson;
-import com.unisystems.registry.unit.UnitByIdJson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +73,79 @@ public class EmployeesFeature {
         }
 
 
+    }
+
+    @Test
+    public void postEmployee()
+    {
+        try {
+            EmployeeRequest request=new EmployeeRequest();
+            request.setAddress("address");
+            request.setFirstName("Petroula");
+            request.setLastName("Stamouli");
+            request.setPhoneNumber("210-6824119");
+            request.setUnitId(3);
+            request.setRecruitmentDate("12/6/2021");
+            mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isCreated());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void updateEmployee(){
+        try {
+            EmployeeRequest request=new EmployeeRequest();
+            request.setAddress("address");
+            request.setFirstName("Petroula");
+            request.setLastName("Stamouli");
+            request.setPhoneNumber("210-6824119");
+            request.setUnitId(3);
+            request.setRecruitmentDate("12/6/2021");
+            mockMvc.perform(MockMvcRequestBuilders.put("/employees/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void checkPatchEmployee(){
+        try {
+            EmployeeRequest request=new EmployeeRequest();
+            request.setAddress("address");
+            request.setFirstName("Petroula");
+            request.setLastName("Stamouli");
+            request.setPhoneNumber("210-6824119");
+            request.setUnitId(3);
+            request.setRecruitmentDate("12/6/2021");
+            mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(request))
+            )
+                    .andExpect(status().isOk());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
