@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,24 +42,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        return jdbcUserDetailsManager;
 //    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
 //                .anyRequest().permitAll();
-                .antMatchers("/Units/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
-                .antMatchers("/Companies/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
-                .antMatchers("/BusinessUnits/list").hasAnyAuthority("ADMIN", "COMPANY_MANAGER")
-                .antMatchers("/Departments/list").hasAnyAuthority("DEPARTMENT_MANAGER","ADMIN")
-//                .antMatchers("/BusinessUnits/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')")
-//                .antMatchers("/Departments/**").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER")
+//                .antMatchers("/Units/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
+//                .antMatchers("/Companies/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
+//                .antMatchers("/BusinessUnits/list").hasAnyAuthority("ADMIN", "COMPANY_MANAGER")
+//                .antMatchers("/Departments/list").hasAnyAuthority("DEPARTMENT_MANAGER","ADMIN")
+                //.antMatchers("/employees").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')")
+//                .antMatchers("/departments").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER")
 //                .antMatchers("/Units/**").hasAnyAuthority("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
-                .antMatchers("/Employees/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
-                .and()
-                .httpBasic()
-                    ; //userdetails interface!
-    }
+                //.antMatchers("/employees").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
+//                .antMatchers("/employees").hasAnyAuthority("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
+//                .and()
+//                .httpBasic()
+//                    ; //userdetails interface!
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder(){

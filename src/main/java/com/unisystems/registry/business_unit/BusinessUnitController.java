@@ -6,6 +6,7 @@ import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class BusinessUnitController
     }
 
     @PostMapping("/business-units")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER') ")
     public ResponseEntity<Object> postBusinessUnit(@RequestBody BusinessUnitRequest buRequest) {
         ResponseEntity<Object> errorReturn = buRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -62,6 +64,7 @@ public class BusinessUnitController
     }
 
     @PutMapping("/business-units/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER') ")
     public ResponseEntity<Object> putBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
         if (service.getBusinessUnitById(id).getError() != null) {
             return new ResponseEntity<>(
@@ -85,6 +88,7 @@ public class BusinessUnitController
     }
 
     @PatchMapping("/business-units/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER') ")
     public ResponseEntity<Object> patchBusinessUnit(@RequestBody BusinessUnitRequest buRequest, @PathVariable long id) {
         if (service.getBusinessUnitById(id).getError() != null) {
             return new ResponseEntity<>(

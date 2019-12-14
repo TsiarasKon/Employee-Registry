@@ -6,6 +6,7 @@ import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,6 +52,8 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER')")
     public ResponseEntity<Object> postDepartment(@RequestBody DepartmentRequest deptRequest) {
         ResponseEntity<Object> errorReturn = deptRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -68,6 +71,8 @@ public class DepartmentController {
     }
 
     @PutMapping("/departments/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER')")
     public ResponseEntity<Object> putDepartment(@RequestBody DepartmentRequest deptRequest, @PathVariable long id) {
         if (service.getDepartmentWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -91,6 +96,8 @@ public class DepartmentController {
     }
 
     @PatchMapping("/departments/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER')")
     public ResponseEntity<Object> patchDepartment(@RequestBody DepartmentRequest deptRequest, @PathVariable long id) {
         if (service.getDepartmentWithId(id).getError() != null) {
             return new ResponseEntity<>(

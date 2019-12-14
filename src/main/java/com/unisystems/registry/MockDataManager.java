@@ -133,7 +133,6 @@ public class MockDataManager {
         String common_pass = encoder.encode("123456");
         LoginUser[] allLoginUsers = new LoginUser[6];
         allLoginUsers[0] = new LoginUser("admin",common_pass,true,admin_auth);
-        //allLoginUsers[0].setPassword(passwordEncoder.encode(allLoginUsers[0].getPassword()));
         allLoginUsers[1] = new LoginUser("companyManager",common_pass,true,companyManager_auth);
         allLoginUsers[2] = new LoginUser("businessUnitManager",common_pass,true,businessUnitManager_auth);
         allLoginUsers[3] = new LoginUser("departmentManager",common_pass,true,departmentManager_auth);
@@ -141,17 +140,17 @@ public class MockDataManager {
         allLoginUsers[5] = new LoginUser("employee",common_pass,true,employee_auth);
 
         Authority[] allAuthorities = new Authority[6];
-        allAuthorities[0] = new Authority("ADMIN", allLoginUsers[0]);
+        allAuthorities[0] = new Authority("ROLE_ADMIN", allLoginUsers[0]);
         admin_auth.add(allAuthorities[0]);
-        allAuthorities[1] = new Authority("COMPANY_MANAGER", allLoginUsers[1]);
+        allAuthorities[1] = new Authority("ROLE_COMPANY_MANAGER", allLoginUsers[1]);
         companyManager_auth.add(allAuthorities[1]);
-        allAuthorities[2] = new Authority("BUSINESS_MANAGER", allLoginUsers[2]);
+        allAuthorities[2] = new Authority("ROLE_BUSINESS_MANAGER", allLoginUsers[2]);
         businessUnitManager_auth.add(allAuthorities[2]);
-        allAuthorities[3] = new Authority("DEPARTMENT_MANAGER", allLoginUsers[3]);
+        allAuthorities[3] = new Authority("ROLE_DEPARTMENT_MANAGER", allLoginUsers[3]);
         departmentManager_auth.add(allAuthorities[3]);
-        allAuthorities[4] = new Authority("UNIT_MANAGER", allLoginUsers[4]);
+        allAuthorities[4] = new Authority("ROLE_UNIT_MANAGER", allLoginUsers[4]);
         unitManager_auth.add(allAuthorities[4]);
-        allAuthorities[5] = new Authority("EMPLOYEE", allLoginUsers[5]);
+        allAuthorities[5] = new Authority("ROLE_EMPLOYEE", allLoginUsers[5]);
         employee_auth.add(allAuthorities[5]);
 
 
