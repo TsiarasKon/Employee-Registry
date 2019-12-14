@@ -1,5 +1,7 @@
 package com.unisystems.registry;
 
+import com.unisystems.registry.authority.Authority;
+import com.unisystems.registry.authority.AuthorityRepository;
 import com.unisystems.registry.business_unit.BusinessUnit;
 import com.unisystems.registry.business_unit.BusinessUnitRepository;
 import com.unisystems.registry.company.Company;
@@ -15,11 +17,15 @@ import com.unisystems.registry.task.Task;
 import com.unisystems.registry.task.TaskRepository;
 import com.unisystems.registry.unit.Unit;
 import com.unisystems.registry.unit.UnitRepository;
+import com.unisystems.registry.user.LoginUser;
+import com.unisystems.registry.user.LoginUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Component
 public class MockDataManager {
@@ -36,6 +42,14 @@ public class MockDataManager {
     EmployeeRepository employeeRepository;
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    LoginUserRepository loginUserRepository;
+    @Autowired
+    AuthorityRepository authorityRepository;
+    @Autowired
+    PasswordEncoder encoder;
+    //private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void generateAndSaveMockData() {
         // ideas for company structure taken from: https://www.unisystems.com/markets
@@ -107,11 +121,46 @@ public class MockDataManager {
         task4.setAssignedEmployee(Arrays.asList(employeeArr[2],employeeArr[3],employeeArr[4]));
         task5.setAssignedEmployee(Arrays.asList(employeeArr[4],employeeArr[5]));
 
+        //Define all HashSets
+        HashSet<Authority> admin_auth = new HashSet<Authority>();
+        HashSet<Authority> companyManager_auth = new HashSet<Authority>();
+        HashSet<Authority> businessUnitManager_auth = new HashSet<Authority>();
+        HashSet<Authority> departmentManager_auth = new HashSet<Authority>();
+        HashSet<Authority> unitManager_auth = new HashSet<Authority>();
+        HashSet<Authority> employee_auth = new HashSet<Authority>();
+
+        //Add users and authorities
+        String common_pass = encoder.encode("123456");
+        LoginUser[] allLoginUsers = new LoginUser[6];
+        allLoginUsers[0] = new LoginUser("admin",common_pass,true,admin_auth);
+        allLoginUsers[1] = new LoginUser("companyManager",common_pass,true,companyManager_auth);
+        allLoginUsers[2] = new LoginUser("businessUnitManager",common_pass,true,businessUnitManager_auth);
+        allLoginUsers[3] = new LoginUser("departmentManager",common_pass,true,departmentManager_auth);
+        allLoginUsers[4] = new LoginUser("unitManager",common_pass,true,unitManager_auth);
+        allLoginUsers[5] = new LoginUser("employee",common_pass,true,employee_auth);
+
+        Authority[] allAuthorities = new Authority[6];
+        allAuthorities[0] = new Authority("ROLE_ADMIN", allLoginUsers[0]);
+        admin_auth.add(allAuthorities[0]);
+        allAuthorities[1] = new Authority("ROLE_COMPANY_MANAGER", allLoginUsers[1]);
+        companyManager_auth.add(allAuthorities[1]);
+        allAuthorities[2] = new Authority("ROLE_BUSINESS_MANAGER", allLoginUsers[2]);
+        businessUnitManager_auth.add(allAuthorities[2]);
+        allAuthorities[3] = new Authority("ROLE_DEPARTMENT_MANAGER", allLoginUsers[3]);
+        departmentManager_auth.add(allAuthorities[3]);
+        allAuthorities[4] = new Authority("ROLE_UNIT_MANAGER", allLoginUsers[4]);
+        unitManager_auth.add(allAuthorities[4]);
+        allAuthorities[5] = new Authority("ROLE_EMPLOYEE", allLoginUsers[5]);
+        employee_auth.add(allAuthorities[5]);
+
+
         companyRepository.save(uniSystems);
         buRepository.saveAll(Arrays.asList(financeBU, telecomBU));
         deptRepository.saveAll(Arrays.asList(bankingD, infrastructureD, networkingD));
         unitRepository.saveAll(Arrays.asList(coreBankingU, paymentU, storageU, servicesU, fileU, t4gU, t5gU));
         employeeRepository.saveAll(Arrays.asList(employeeArr));
         taskRepository.saveAll(Arrays.asList(task,task2,task3,task4,task5));
+        loginUserRepository.saveAll(Arrays.asList(allLoginUsers));
+        authorityRepository.saveAll(Arrays.asList(allAuthorities));
     }
 }

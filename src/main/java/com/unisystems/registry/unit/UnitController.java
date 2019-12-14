@@ -7,6 +7,7 @@ import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,8 +17,6 @@ public class UnitController {
 
     @Autowired
     private UnitService service;
-
-    //public UnitController(UnitRepository repository){this.repository=repository;}
 
     public UnitController(UnitService service) {
         this.service = service;
@@ -59,6 +58,8 @@ public class UnitController {
     }
 
     @PostMapping("/units")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> postUnit(@RequestBody UnitRequest unitRequest) {
         ResponseEntity<Object> errorReturn = unitRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -69,13 +70,15 @@ public class UnitController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PutMapping("/units/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> putUnit(@RequestBody UnitRequest unitRequest, @PathVariable long id) {
         if (service.getUnitWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -92,13 +95,15 @@ public class UnitController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PatchMapping("/units/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> patchUnit(@RequestBody UnitRequest unitRequest, @PathVariable long id) {
         if (service.getUnitWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -113,7 +118,7 @@ public class UnitController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }

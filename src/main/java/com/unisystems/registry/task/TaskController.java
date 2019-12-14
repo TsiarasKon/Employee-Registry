@@ -7,6 +7,7 @@ import com.unisystems.registry.task.search_task_strategy.difficultyComparison;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -62,6 +63,8 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> postTask(@RequestBody TaskRequest taskRequest) {
         ResponseEntity<Object> errorReturn = taskRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -70,15 +73,22 @@ public class TaskController {
                     taskService.post(taskRequest),
                     HttpStatus.CREATED
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PutMapping("/tasks/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> putTask(@RequestBody TaskRequest taskRequest, @PathVariable long id) {
         if (taskService.getTaskById(id).getError() != null) {
             return new ResponseEntity<>(
@@ -93,15 +103,22 @@ public class TaskController {
                     taskService.put(taskRequest, id),
                     HttpStatus.OK
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PatchMapping("/tasks/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> patchTask(@RequestBody TaskRequest taskRequest, @PathVariable long id) {
         if (taskService.getTaskById(id).getError() != null) {
             return new ResponseEntity<>(
@@ -114,9 +131,14 @@ public class TaskController {
                     taskService.patch(taskRequest, id),
                     HttpStatus.OK
             );
-        } catch (InvalidIdException | InterUnitTaskException e) {
+        } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (InterUnitTaskException e) {
+            return new ResponseEntity<>(
+                    new GenericError(3, "Task across different units", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }

@@ -6,6 +6,7 @@ import com.unisystems.registry.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +36,7 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER')")
     public ResponseEntity<Object> putCompany(@RequestBody CompanyRequest companyRequest) {
         ResponseEntity<Object> errorReturn = companyRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -45,6 +47,7 @@ public class CompanyController {
     }
 
     @PutMapping("/companies/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') ")
     public ResponseEntity<Object> putCompany(@RequestBody CompanyRequest companyRequest, @PathVariable long id) {
         if (service.getCompanyWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -61,13 +64,14 @@ public class CompanyController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PatchMapping("/companies/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') ")
     public ResponseEntity<Object> patchCompany(@RequestBody CompanyRequest companyRequest, @PathVariable long id) {
         if (service.getCompanyWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -82,7 +86,7 @@ public class CompanyController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }

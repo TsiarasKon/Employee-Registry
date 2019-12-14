@@ -7,6 +7,7 @@ import com.unisystems.registry.StructureUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class EmployeeController {
     EmployeeService service;
 
     @GetMapping("/employees")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_COMPANY_MANAGER') ")
     public ResponseEntity getAllEmployees(){
         GenericResponse<MultipleEmployeeResponse> employeeResponse = service.getAllEmployees();
         return employeeResponse.getResponseEntity(null, HttpStatus.BAD_REQUEST);
@@ -42,6 +44,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> putEmployee(@RequestBody EmployeeRequest employeeRequest) {
         ResponseEntity<Object> errorReturn = employeeRequest.validateRequest();
         if (errorReturn != null) return errorReturn;
@@ -52,13 +56,15 @@ public class EmployeeController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PutMapping("/employees/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> putEmployee(@RequestBody EmployeeRequest employeeRequest, @PathVariable long id) {
         if (service.getEmployeeWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -75,13 +81,15 @@ public class EmployeeController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
     }
 
     @PatchMapping("/employees/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')" +
+                  " or hasRole('ROLE_DEPARTMENT_MANAGER') or hasRole('ROLE_UNIT_MANAGER')")
     public ResponseEntity<Object> patchEmployee(@RequestBody EmployeeRequest employeeRequest, @PathVariable long id) {
         if (service.getEmployeeWithId(id).getError() != null) {
             return new ResponseEntity<>(
@@ -96,7 +104,7 @@ public class EmployeeController {
             );
         } catch (InvalidIdException e) {
             return new ResponseEntity<>(
-                    e.getMessage(),
+                    new GenericError(1, "Invalid id", e.getMessage()),
                     HttpStatus.BAD_REQUEST
             );
         }
