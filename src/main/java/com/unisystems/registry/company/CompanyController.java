@@ -36,7 +36,7 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER')")
     public ResponseEntity<Object> putCompany(@RequestBody CompanyRequest companyRequest) {
         ResponseEntity<Object> errorReturn = companyRequest.validateRequest();
         if (errorReturn != null) return errorReturn;

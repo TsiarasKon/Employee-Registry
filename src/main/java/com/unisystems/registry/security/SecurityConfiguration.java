@@ -35,32 +35,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "select username,role from authority where username =?");
     }
 
-//    @Bean
-//    public JdbcUserDetailsManager jdbcUserDetailsManager() throws Exception {
-//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-//        jdbcUserDetailsManager.setDataSource(dataSource);
-//        return jdbcUserDetailsManager;
-//    }
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .anyRequest().permitAll();
-//                .antMatchers("/Units/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
-//                .antMatchers("/Companies/list").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
-//                .antMatchers("/BusinessUnits/list").hasAnyAuthority("ADMIN", "COMPANY_MANAGER")
-//                .antMatchers("/Departments/list").hasAnyAuthority("DEPARTMENT_MANAGER","ADMIN")
-                //.antMatchers("/employees").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMPANY_MANAGER') or hasRole('ROLE_BUSINESS_MANAGER')")
-//                .antMatchers("/departments").hasAnyRole("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER")
-//                .antMatchers("/Units/**").hasAnyAuthority("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
-                //.antMatchers("/employees").hasAnyAuthority("ADMIN","COMPANY_MANAGER")
-//                .antMatchers("/employees").hasAnyAuthority("ADMIN","COMPANY_MANAGER","BUSINESS_MANAGER","DEPARTMENT_MANAGER","UNIT_MANAGER")
-//                .and()
-//                .httpBasic()
-//                    ; //userdetails interface!
-//    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .httpBasic();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder(){
